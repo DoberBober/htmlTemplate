@@ -11,20 +11,20 @@ Run «mkdir.bat».
 Folders structure:
 
 dev
-	- blocks
-		-- _mixins
-	- fonts
-	- images
-		-- icons (SVG-icons for sprite)
-	- js
-	- pages
-	- styles
-		-- helpers
+  - blocks
+    -- _mixins
+  - fonts
+  - images
+    -- icons (SVG-icons for sprite)
+  - js
+  - pages
+  - styles
+    -- helpers
 public
-	- css
-	- fonts
-	- images
-	- js
+  - css
+  - fonts
+  - images
+  - js
 
 <!--  -->
 
