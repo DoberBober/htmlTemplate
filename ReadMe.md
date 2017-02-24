@@ -1,7 +1,7 @@
 # Install: #
 
   - Install plugins.
-    * Open Command Prompt in project folder and execute «npm install».
+    * Open Command Line in project folder and execute «npm install».
   - Make dir.
     * Run «mkdir.bat».
   - Insert TinyPNG key on line 111.
