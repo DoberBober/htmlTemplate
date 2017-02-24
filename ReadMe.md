@@ -13,7 +13,7 @@
   - dev
     - blocks
       * _mixins
-    - fonts
+    - fonts (ttf fonts)
     - images
       * icons (SVG-icons for sprite)
     - js
