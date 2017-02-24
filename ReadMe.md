@@ -12,14 +12,15 @@ Folders structure:
 
 dev
   - blocks
-    -- _mixins
+    * _mixins
   - fonts
   - images
-    -- icons (SVG-icons for sprite)
+    * icons (SVG-icons for sprite)
   - js
   - pages
   - styles
-    -- helpers
+    * helpers
+    
 public
   - css
   - fonts
