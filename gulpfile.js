@@ -108,7 +108,7 @@ gulp.task('svgSpriteBuild', function () {
 // Images optimization.
 gulp.task('tinypng', function () {
     gulp.src(dev + 'images/*.{jpg, jpeg, png}')
-        .pipe(tinypng('Ws05x7V_izoAh2mvUBBIp5Rc-55Mfed4'))
+        .pipe(tinypng('KEY'))
         .pipe(gulp.dest(prod + 'images'));
 });
 // ttf2woff.
