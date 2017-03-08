@@ -9,6 +9,7 @@ const concatJs = require('gulp-concat');
 const cssmin = require('gulp-cssmin');
 const errorNotifier = require('gulp-error-notifier');
 const gulp = require('gulp');
+const mainBowerFiles = require('main-bower-files');
 const postcss = require('gulp-postcss');
 const pug = require('gulp-pug');
 const rename = require('gulp-rename');
@@ -73,6 +74,25 @@ gulp.task('scripts', function(){
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
 })
+// Libs.
+gulp.task('libs', function() {
+    gulp.src(mainBowerFiles())
+    	.pipe(gulp.dest(dev + 'libs'));
+});
+// CSS libs.
+gulp.task('pluginsCss', function () {
+    gulp.src(dev + 'libs/*.css')
+    	.pipe(concatCss('pliguns.css'))
+		.pipe(gulp.dest(prod + 'css'))
+		.pipe(browserSync.stream());
+});
+// JS libs.
+gulp.task('pluginsJs', function () {
+    gulp.src(dev + 'libs/*.js')
+    	.pipe(concatJs('pliguns.js'))
+       .pipe(gulp.dest(prod + 'js'))
+		.pipe(browserSync.stream());
+});
 // SVG-sprite.
 gulp.task('svgSpriteBuild', function () {
 	gulp.src(dev + 'images/icons/*.svg')
@@ -108,7 +128,7 @@ gulp.task('svgSpriteBuild', function () {
 // Images optimization.
 gulp.task('tinypng', function () {
     gulp.src(dev + 'images/*.{jpg, jpeg, png}')
-        .pipe(tinypng('KEY'))
+        .pipe(tinypng('Ws05x7V_izoAh2mvUBBIp5Rc-55Mfed4'))
         .pipe(gulp.dest(prod + 'images'));
 });
 // ttf2woff.
@@ -139,7 +159,7 @@ gulp.task('jsMin', function(){
 });
 
 // Default.
-gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'styles', 'scripts', 'svgSpriteBuild', 'watch']);
+gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
 
 // Watch
 gulp.task('watch', function() {
@@ -162,6 +182,14 @@ gulp.task('watch', function() {
     // JS.
     watch([dev + 'js/*.js'], batch(function(events, cb) {
         gulp.start('scripts', cb);
+    }));
+    // CSS libs.
+    watch([dev + 'libs/*.css'], batch(function(events, cb) {
+        gulp.start('pluginsCss', cb);
+    }));
+    // JS libs.
+    watch([dev + 'libs/*.js'], batch(function(events, cb) {
+        gulp.start('pluginsJs', cb);
     }));
     // SVG-sprite.
     watch([dev + 'images/icons/*.svg'], batch(function(events, cb) {
