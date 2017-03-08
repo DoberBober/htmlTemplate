@@ -2,7 +2,7 @@
 
   - Install Gulp and Bower.
   - Initial Bower.
-    * bower init».
+    * «bower init».
   - Install plugins.
     * Open Command Line in project folder and execute «npm install».
   - Make dir.
