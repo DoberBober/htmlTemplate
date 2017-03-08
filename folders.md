@@ -1,0 +1,11 @@
+dev
+	- blocks
+		-- _mixins
+	- fonts
+	- images
+		-- icons (SVG-icons for sprite)
+	- js
+	- libs (CSS and JS files libraries)
+	- pages
+	- styles
+		-- helpers
