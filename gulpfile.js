@@ -68,6 +68,12 @@ gulp.task('styles', function(){
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 })
+// CSS.
+gulp.task('css', function(){
+	gulp.src(dev + 'styles/*.css')
+		.pipe(gulp.dest(prod + 'css'))
+		.pipe(browserSync.stream());
+})
 // JS.
 gulp.task('scripts', function(){
 	gulp.src(dev + 'js/*.js')
@@ -181,6 +187,10 @@ gulp.task('watch', function() {
     }));
     // Styles.
     watch([dev + 'styles/*.styl'], batch(function(events, cb) {
+        gulp.start('styles', cb);
+    }));
+    // Block styles.
+    watch([dev + 'blocks/*/*.styl'], batch(function(events, cb) {
         gulp.start('styles', cb);
     }));
     // JS.
