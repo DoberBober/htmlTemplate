@@ -175,6 +175,10 @@ gulp.task('watch', function() {
     watch([dev + 'pages/*.pug'], batch(function(events, cb) {
         gulp.start('pages', cb);
     }));
+    // Reloader.
+    watch([dev + 'blocks/*/*'], batch(function(events, cb) {
+        gulp.start('pages', cb);
+    }));
     // Styles.
     watch([dev + 'styles/*.styl'], batch(function(events, cb) {
         gulp.start('styles', cb);
