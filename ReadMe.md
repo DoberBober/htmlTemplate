@@ -1,13 +1,12 @@
 # Install: #
 
-  - Install Gulp and Bower.
-  - Initial Bower.
-    * «bower init».
   - Install plugins.
     * Open Command Line in project folder and execute «npm install».
+  - Initial Bower.
+    * «bower init».
   - Make dir.
     * Run «mkdir.bat».
-  - Insert TinyPNG key on line 111.
+  - Insert TinyPNG key on tinypng-task.
   - Install 3rd-party plugins with command «bower install jquery -S».
 
 <!--  -->
