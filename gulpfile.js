@@ -165,7 +165,7 @@ gulp.task('jsMin', function(){
 });
 
 // Default.
-gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
+gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
 
 // Watch
 gulp.task('watch', function() {
