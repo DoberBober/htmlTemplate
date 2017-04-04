@@ -80,6 +80,13 @@ gulp.task('scripts', function(){
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
 })
+// Block JS.
+gulp.task('scripts', function(){
+	gulp.src(dev + 'blocks/*/*.js')
+		.pipe(concatJs('main.js'))
+		.pipe(gulp.dest(prod + 'js'))
+		.pipe(browserSync.stream());
+})
 // Libs.
 gulp.task('libs', function() {
     gulp.src(mainBowerFiles())
@@ -165,7 +172,7 @@ gulp.task('jsMin', function(){
 });
 
 // Default.
-gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
+gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
 
 // Watch
 gulp.task('watch', function() {
@@ -181,7 +188,7 @@ gulp.task('watch', function() {
     watch([dev + 'pages/*.pug'], batch(function(events, cb) {
         gulp.start('pages', cb);
     }));
-    // Reloader.
+	// Reloader.
     watch([dev + 'blocks/*/*'], batch(function(events, cb) {
         gulp.start('pages', cb);
     }));
@@ -193,8 +200,16 @@ gulp.task('watch', function() {
     watch([dev + 'blocks/*/*.styl'], batch(function(events, cb) {
         gulp.start('styles', cb);
     }));
+    // CSS.
+    watch([dev + 'styles/*.css'], batch(function(events, cb) {
+		gulp.start('css', cb);
+    }));
     // JS.
     watch([dev + 'js/*.js'], batch(function(events, cb) {
+        gulp.start('scripts', cb);
+    }));
+    // Block scripts.
+    watch([dev + 'blocks/*/*.js'], batch(function(events, cb) {
         gulp.start('scripts', cb);
     }));
     // CSS libs.
