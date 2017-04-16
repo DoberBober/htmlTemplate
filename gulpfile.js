@@ -74,15 +74,9 @@ gulp.task('css', function(){
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 })
-// JS.
+// JS / Block JS.
 gulp.task('scripts', function(){
-	gulp.src(dev + 'js/*.js')
-		.pipe(gulp.dest(prod + 'js'))
-		.pipe(browserSync.stream());
-})
-// Block JS.
-gulp.task('scripts', function(){
-	gulp.src(dev + 'blocks/*/*.js')
+	gulp.src([dev + 'blocks/*/*.js', dev + 'js/*.js'])
 		.pipe(concatJs('main.js'))
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
@@ -95,14 +89,14 @@ gulp.task('libs', function() {
 // CSS libs.
 gulp.task('pluginsCss', function () {
     gulp.src(dev + 'libs/*.css')
-    	.pipe(concatCss('pliguns.css'))
+    	.pipe(concatCss('plugins.css'))
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 });
 // JS libs.
 gulp.task('pluginsJs', function () {
     gulp.src(dev + 'libs/*.js')
-    	.pipe(concatJs('pliguns.js'))
+    	.pipe(concatJs('plugins.js'))
        .pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
 });
