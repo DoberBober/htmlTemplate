@@ -94,7 +94,7 @@ gulp.task('libs', function() {
 });
 // CSS libs.
 gulp.task('pluginsCss', function () {
-    gulp.src(dev + 'libs/*.css')
+    gulp.src(dev + ['libs/*.css', '!libs/normalize.css'])
     	.pipe(concatCss('plugins.css'))
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
@@ -104,6 +104,12 @@ gulp.task('pluginsJs', function () {
     gulp.src(dev + 'libs/*.js')
     	.pipe(concatJs('plugins.js'))
        .pipe(gulp.dest(prod + 'js'))
+		.pipe(browserSync.stream());
+});
+// Normalize.
+gulp.task('normalize', function () {
+    gulp.src(dev + ['libs/normalize.css'])
+		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 });
 // SVG-sprite.
@@ -172,7 +178,7 @@ gulp.task('jsMin', function(){
 });
 
 // Default.
-gulp.task('default', ['browserSync', 'bitmap', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
+gulp.task('default', ['browserSync', 'bitmap', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
 
 // Watch
 gulp.task('watch', function() {
