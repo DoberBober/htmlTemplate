@@ -94,7 +94,7 @@ gulp.task('libs', function() {
 });
 // CSS libs.
 gulp.task('pluginsCss', function () {
-    gulp.src(dev + ['libs/*.css', '!libs/normalize.css'])
+    gulp.src([dev + 'libs/*.css', '!' + dev + 'libs/normalize.css'])
     	.pipe(concatCss('plugins.css'))
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
