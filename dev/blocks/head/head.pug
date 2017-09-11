@@ -1,0 +1,44 @@
+mixin head(title)
+	- var default_title = 'title'
+	if title
+		- var default_title = title
+
+	doctype
+	html(lang="ru")
+		head
+			meta(charset="utf-8")
+			meta(http-equiv="X-UA-Compatible" content="IE=Edge")
+			meta(name="viewport" content="width=device-width,initial-scale=1")
+			meta(name="author" content="_______________authorName_______________")
+			title !{default_title}
+			//- 
+			link(href="css/normalize.css" rel="stylesheet")
+			link(href="css/plugins.css" rel="stylesheet")
+			link(href="css/styles.css" rel="stylesheet")
+			link(href="css/fonts.css" rel="stylesheet")
+			// FAVICON FOR EVERYBODY, FREE, AND LET NO ONE BE LEFT BEHIND!
+			link(href="/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon")
+			link(rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png")
+			link(rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32")
+			link(rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16")
+			link(rel="manifest" href="/manifest.json")
+			link(rel="mask-icon" href="/safari-pinned-tab.svg" color="#fff")
+			meta(name="theme-color" content="#fff")
+			link(rel="author" href="/humans.txt")
+			// Search Engine
+			meta(name="description" content="_______________SiteDescription_______________")
+			meta(name="image" content="/templates/liquid/images/logo.svg")
+			meta(name="author" content="_______________authorName_______________")
+			// Twitter
+			meta(name="twitter:card" content="summary")
+			meta(name="twitter:title" content="_______________SiteName_______________")
+			meta(name="twitter:description" content="_______________SiteDescription_______________")
+			meta(name="twitter:image:src" content="/templates/liquid/images/logo.svg")
+			// Open Graph general (Facebook Pinterest & Google+)
+			meta(name="og:title" content="_______________SiteName_______________")
+			meta(name="og:description" content="_______________SiteDescription_______________")
+			meta(name="og:image" content="/templates/liquid/images/logo.svg")
+			meta(name="og:url" content="_______________example.ru_______________")
+			meta(name="og:site_name" content="_______________SiteName_______________")
+			meta(name="og:locale" content="ru_RU")
+			meta(name="og:type" content="website")
