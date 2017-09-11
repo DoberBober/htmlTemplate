@@ -39,16 +39,16 @@ gulp.task('browserSync', function() {
 });
 // Images.
 gulp.task('images', function(){
-	gulp.src(dev + 'images/*')
+	gulp.src([dev + 'images/*', dev + 'images/*/*', '!' + dev + 'images/icons', '!' + dev + 'images/icons/*'])
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
 });
-// Bitmap icons.
-gulp.task('bitmap', function(){
-	gulp.src(dev + 'images/icons/*.{png, jpg, jpeg}')
-		.pipe(gulp.dest(prod + 'images/icons'))
-		.pipe(browserSync.stream());
-});
+// // Bitmap icons.
+// gulp.task('bitmap', function(){
+// 	gulp.src(dev + 'images/icons/*.{png, jpg, jpeg}')
+// 		.pipe(gulp.dest(prod + 'images/icons'))
+// 		.pipe(browserSync.stream());
+// });
 // Fonts.
 gulp.task('fonts', function(){
 	gulp.src(dev + 'fonts/*')
@@ -178,16 +178,20 @@ gulp.task('jsMin', function(){
 });
 
 // Default.
-gulp.task('default', ['browserSync', 'bitmap', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
+gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
+// gulp.task('default', ['browserSync', 'bitmap', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
 
 // Watch
 gulp.task('watch', function() {
-	// Bitmap icons.
-    watch([dev + 'images/icons/*.{png, jpg, jpeg}'], batch(function(events, cb) {
-        gulp.start('bitmap', cb);
-    }));
+	// // Bitmap icons.
+ //    watch([dev + 'images/icons/*.{png, jpg, jpeg}'], batch(function(events, cb) {
+ //        gulp.start('bitmap', cb);
+ //    }));
 	// Images.
     watch([dev + 'images/*'], batch(function(events, cb) {
+        gulp.start('images', cb);
+    }));
+    watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], batch(function(events, cb) {
         gulp.start('images', cb);
     }));
     // Fonts.
