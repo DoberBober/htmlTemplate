@@ -8,13 +8,13 @@ webfont(name, fileName, weight = normal, style = normal)
 		font-style style
 
 clearfix()
-    &::after
-        display block
-        content ''
-        clear both
+	&::after
+		display block
+		content ''
+		clear both
 
 ft(min, max)
-    rem = (min/16)rem
-    diff = (max - min)
-    value = 'calc(%s + %s * (%s - %s) / %s)' % (rem diff 100vw 320px 990)
-    font-size value
+	rem = (min/16)rem
+	diff = (max - min)
+	value = 'calc(%s + %s * (%s - %s) / %s)' % (rem diff 100vw 320px 990)
+	font-size value
