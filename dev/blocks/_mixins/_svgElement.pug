@@ -1,3 +1,7 @@
-mixin svgElement(name)
-	svg
-		use(xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#"+name)
+mixin svgElement(name, width, height)
+	if(width || height)
+		svg.qwe
+			use(xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#"+name)
+	else
+		svg
+			use(xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#"+name)
