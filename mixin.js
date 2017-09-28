@@ -6,13 +6,13 @@ var readline = require('readline');
 const rl = readline.createInterface(process.stdin, process.stdout);
 
 // folder with all blocks
-const BLOCKS_DIR = path.join(__dirname, 'dev/blocks');
+const BLOCKS_DIR = path.join(__dirname, 'dev/blocks/_mixins');
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////
 
 // default content for files in new block
 const fileSources = {
-	pug : `.{blockName}\n`,
+	pug : `mixin {blockName}()\n    .{blockName} block\n`,
   styl: `.{blockName}\n    display block\n`,
 	js  : `//.{blockName} scripts goes here\n`,
 };

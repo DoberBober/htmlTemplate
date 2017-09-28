@@ -185,7 +185,7 @@ gulp.task('jsMin', function() {
 });
 
 // Default.
-gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
+gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
 // gulp.task('default', ['browserSync', 'bitmap', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
 
 // Watch
