@@ -1,6 +1,6 @@
 mixin svgElement(name, width, height)
 	if(width || height)
-		svg.qwe
+		svg(width=width height=height)
 			use(xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#"+name)
 	else
 		svg
