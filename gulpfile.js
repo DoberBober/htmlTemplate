@@ -125,6 +125,7 @@ gulp.task('svgSpriteBuild', function () {
 				$('[fill]').removeAttr('fill');
 				$('[stroke]').removeAttr('stroke');
 				$('[style]').removeAttr('style');
+				$('[xmlns]').removeAttr('xmlns');
 			},
 			parserOptions: {xmlMode: true}
 		}))
