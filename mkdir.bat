@@ -16,5 +16,6 @@ cd styles
 mkdir helpers
 cd ../
 mkdir libs
+mkdir root
 cd ../
 mkdir bower_components
