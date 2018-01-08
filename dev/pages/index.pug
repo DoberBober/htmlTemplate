@@ -1,11 +1,14 @@
-include ../blocks/head/head.pug
-+head('Главная')
+doctype
+html(lang="ru")
+	include ../blocks/head/head.pug
+	+head('Главная')
 
-body.frontpage
-	.sprite
-		include ../../public/images/sprite.svg
-		
-	include ../blocks/_mixins/_svgElement.pug
+	body.frontpage
+		.sprite
+			include ../../public/images/sprite.svg
+			
+		include ../blocks/_mixins/_svgElement.pug
 
-	script(src="js/plugins.js")
-	script(src="js/main.js")
+
+		include ../blocks/_mixins/_scripts.pug
+		+scripts('plugins', 'main')

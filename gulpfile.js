@@ -63,7 +63,7 @@ gulp.task('pages', function() {
 	gulp.src(dev + 'pages/*.pug')
 		.pipe(errorNotifier())
 		.pipe(pug({
-			pretty: true
+			pretty: '	'
 		}))
 		.pipe(gulp.dest('./public'))
 		.pipe(browserSync.stream());
