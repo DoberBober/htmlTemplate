@@ -1,7 +1,7 @@
 mixin svgElement(name, width, height)
 	if(width || height)
-		svg(width=width height=height)
+		svg(width=width height=height aria-hidden="true")
 			use(xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#"+name)
 	else
-		svg
+		svg(aria-hidden="true")
 			use(xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#"+name)
