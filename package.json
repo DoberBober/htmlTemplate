@@ -34,5 +34,8 @@
     "gulp-watch": "^4.3.11",
     "main-bower-files": "^2.13.1",
     "pug": "^0.1.0"
+  },
+  "dependencies": {
+    "gulp-sourcemaps": "^2.6.4"
   }
 }
