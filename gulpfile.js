@@ -14,6 +14,7 @@ const postcss = require('gulp-postcss');
 const pug = require('gulp-pug');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
+const sourcemaps = require('gulp-sourcemaps');
 const stylus = require('gulp-stylus');
 const svgmin = require('gulp-svgmin');
 const svgSprite = require('gulp-svg-sprite');
@@ -72,8 +73,10 @@ gulp.task('pages', function() {
 gulp.task('styles', function() {
 	gulp.src(dev + 'styles/*.styl')
 		.pipe(errorNotifier())
+		.pipe(sourcemaps.init())
 		.pipe(stylus())
 		.pipe(postcss(postplugins))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 })
@@ -86,7 +89,9 @@ gulp.task('css', function() {
 // JS / Block JS.
 gulp.task('scripts', function() {
 	gulp.src([dev + 'blocks/*/*.js', dev + 'js/*.js'])
+		.pipe(sourcemaps.init())
 		.pipe(concatJs('main.js'))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
 })
