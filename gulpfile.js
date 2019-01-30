@@ -47,12 +47,6 @@ gulp.task('images', function() {
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
 });
-// // Bitmap icons.
-// gulp.task('bitmap', function(){
-// 	gulp.src(dev + 'images/icons/*.{png, jpg, jpeg}')
-// 		.pipe(gulp.dest(prod + 'images/icons'))
-// 		.pipe(browserSync.stream());
-// });
 // Fonts.
 gulp.task('fonts', function() {
 	gulp.src(dev + 'fonts/*')
@@ -102,21 +96,15 @@ gulp.task('libs', function() {
 });
 // CSS libs.
 gulp.task('pluginsCss', function() {
-	gulp.src([dev + 'libs/*.css', '!' + dev + 'libs/normalize.css'])
+	gulp.src(dev + 'libs/*.css')
 		.pipe(concatCss('plugins.css'))
-		.pipe(gulp.dest(prod + 'css'))
-		.pipe(browserSync.stream());
-	gulp.src(dev + ['libs/normalize.css'])
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 });
 // JS libs.
 gulp.task('pluginsJs', function() {
-	gulp.src([dev + 'libs/*.js', '!' + dev + 'libs/jquery.js'])
+	gulp.src(dev + 'libs/*.js')
 		.pipe(concatJs('plugins.js'))
-		.pipe(gulp.dest(prod + 'js'))
-		.pipe(browserSync.stream());
-	gulp.src(dev + ['libs/jquery.js'])
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
 });
@@ -259,16 +247,8 @@ gulp.task('inject-favicon', function() {
 		.pipe(gulp.dest(prod));
 });
 
-// Default.
-gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
-// gulp.task('default', ['browserSync', 'bitmap', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
-
 // Watch
 gulp.task('watch', function() {
-	// // Bitmap icons.
-	//    watch([dev + 'images/icons/*.{png, jpg, jpeg}'], batch(function(events, cb) {
-	//        gulp.start('bitmap', cb);
-	//    }));
 	// Images.
 	watch([dev + 'images/*'], batch(function(events, cb) {
 		gulp.start('images', cb);
@@ -321,6 +301,13 @@ gulp.task('watch', function() {
 		gulp.start('svgSpriteBuild', cb);
 	}));
 });
+
+// Default.
+// v3 gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
+gulp.task('default', gulp.parallel('browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
+// v3 gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
+// gulp.task('default', gulp.parallel('browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
+
 
 // Deploy.
 gulp.task('deploy', function() {
