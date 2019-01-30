@@ -1,7 +1,6 @@
 "use strict";
 
 const autoprefixer = require('autoprefixer');
-const batch = require('gulp-batch');
 const browserSync = require('browser-sync').create();
 const cheerio = require('gulp-cheerio');
 const concatCss = require('gulp-concat-css');
@@ -250,56 +249,30 @@ gulp.task('inject-favicon', function() {
 // Watch
 gulp.task('watch', function() {
 	// Images.
-	watch([dev + 'images/*'], batch(function(events, cb) {
-		gulp.start('images', cb);
-	}));
-	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], batch(function(events, cb) {
-		gulp.start('images', cb);
-	}));
+	watch([dev + 'images/*'], gulp.parallel('images'));
+	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], gulp.parallel('images'));
 	// Fonts.
-	watch([dev + 'fonts/*'], batch(function(events, cb) {
-		gulp.start('fonts', cb);
-	}));
+	watch([dev + 'fonts/*'], gulp.parallel('fonts'));
 	// Pages.
-	watch([dev + 'pages/*.pug'], batch(function(events, cb) {
-		gulp.start('pages', cb);
-	}));
+	watch([dev + 'pages/*.pug'], gulp.parallel('pages'));
 	// Reloader.
-	watch([dev + 'blocks/*/*'], batch(function(events, cb) {
-		gulp.start('pages', cb);
-	}));
+	watch([dev + 'blocks/*/*'], gulp.parallel('pages'));
 	// Styles.
-	watch([dev + 'styles/*.styl'], batch(function(events, cb) {
-		gulp.start('styles', cb);
-	}));
+	watch([dev + 'styles/*.styl'], gulp.parallel('styles'));
 	// Block styles.
-	watch([dev + 'blocks/*/*.styl'], batch(function(events, cb) {
-		gulp.start('styles', cb);
-	}));
+	watch([dev + 'blocks/*/*.styl'], gulp.parallel('styles'));
 	// CSS.
-	watch([dev + 'styles/*.css'], batch(function(events, cb) {
-		gulp.start('css', cb);
-	}));
+	watch([dev + 'styles/*.css'], gulp.parallel('css'));
 	// JS.
-	watch([dev + 'js/*.js'], batch(function(events, cb) {
-		gulp.start('scripts', cb);
-	}));
+	watch([dev + 'js/*.js'], gulp.parallel('scripts'));
 	// Block scripts.
-	watch([dev + 'blocks/*/*.js'], batch(function(events, cb) {
-		gulp.start('scripts', cb);
-	}));
+	watch([dev + 'blocks/*/*.js'], gulp.parallel('scripts'));
 	// CSS libs.
-	watch([dev + 'libs/*.css'], batch(function(events, cb) {
-		gulp.start('pluginsCss', cb);
-	}));
+	watch([dev + 'libs/*.css'], gulp.parallel('pluginsCss'));
 	// JS libs.
-	watch([dev + 'libs/*.js'], batch(function(events, cb) {
-		gulp.start('pluginsJs', cb);
-	}));
+	watch([dev + 'libs/*.js'], gulp.parallel('pluginsJs'));
 	// SVG-sprite.
-	watch([dev + 'images/icons/*.svg'], batch(function(events, cb) {
-		gulp.start('svgSpriteBuild', cb);
-	}));
+	watch([dev + 'images/icons/*.svg'], gulp.parallel('svgSpriteBuild'));
 });
 
 // Default.

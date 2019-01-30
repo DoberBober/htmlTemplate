@@ -13,7 +13,6 @@
     "bower": "^1.8.0",
     "browser-sync": "^2.18.8",
     "gulp": "^4.0.0",
-    "gulp-batch": "^1.0.5",
     "gulp-cheerio": "^0.6.2",
     "gulp-concat": "^2.6.1",
     "gulp-concat-css": "^2.3.0",
