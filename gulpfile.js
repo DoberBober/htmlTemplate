@@ -46,6 +46,12 @@ gulp.task('images', function() {
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
 });
+// Assets.
+gulp.task('assets', function() {
+	gulp.src(dev + 'assets/*')
+		.pipe(gulp.dest(prod + 'assets'))
+		.pipe(browserSync.stream());
+});
 // Fonts.
 gulp.task('fonts', function() {
 	gulp.src(dev + 'fonts/*')
@@ -277,7 +283,7 @@ gulp.task('watch', function() {
 
 // Default.
 // v3 gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
-gulp.task('default', gulp.parallel('browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
+gulp.task('default', gulp.parallel('browserSync', 'images', 'assets', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
 // v3 gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
 // gulp.task('default', gulp.parallel('browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
 
