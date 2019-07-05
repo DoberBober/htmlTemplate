@@ -254,6 +254,8 @@ gulp.task('inject-favicon', function() {
 
 // Watch
 gulp.task('watch', function() {
+	// Assets.
+	watch([dev + 'assets/*'], gulp.parallel('assets'));
 	// Images.
 	watch([dev + 'images/*'], gulp.parallel('images'));
 	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], gulp.parallel('images'));
