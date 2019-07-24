@@ -48,7 +48,7 @@ gulp.task('images', function() {
 });
 // Assets.
 gulp.task('assets', function() {
-	gulp.src(dev + 'assets/*')
+	gulp.src([dev + 'assets/*', dev + 'assets/*/*'])
 		.pipe(gulp.dest(prod + 'assets'))
 		.pipe(browserSync.stream());
 });
@@ -256,6 +256,7 @@ gulp.task('inject-favicon', function() {
 gulp.task('watch', function() {
 	// Assets.
 	watch([dev + 'assets/*'], gulp.parallel('assets'));
+	watch([dev + 'assets/*/*'], gulp.parallel('assets'));
 	// Images.
 	watch([dev + 'images/*'], gulp.parallel('images'));
 	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], gulp.parallel('images'));
