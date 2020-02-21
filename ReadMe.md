@@ -2,10 +2,6 @@
 
   - Install plugins.
     * Open Command Line in project folder and execute «npm install».
-  - Initial Bower.
-    * «bower init».
-  - Insert TinyPNG key on tinypng-task.
-  - Install 3rd-party plugins with command «bower install jquery -S».
 
 <!--  -->
 
