@@ -25,6 +25,9 @@ const watch = require('gulp-watch');
 
 let postplugins = [autoprefixer];
 
+var dev = "./dev/";
+var prod = "./public/";
+
 /* Main tasks. */
 // Server.
 gulp.task('browserSync', function() {
