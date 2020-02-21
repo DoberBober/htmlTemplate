@@ -22,14 +22,8 @@ const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const uglify = require('gulp-uglify');
 const watch = require('gulp-watch');
-var realFavicon = require ('gulp-real-favicon');
-var fs = require('fs');
 
 let postplugins = [autoprefixer];
-
-var FAVICON_DATA_FILE = 'faviconData.json';
-var dev = "./dev/";
-var prod = "./public/";
 
 /* Main tasks. */
 // Server.
@@ -184,73 +178,6 @@ gulp.task('jsMin', function() {
 		}))
 		.pipe(gulp.dest(prod + 'js'));
 });
-// Favicon generator.
-gulp.task('favicon', function(done) {
-	realFavicon.generateFavicon({
-		masterPicture: dev + 'root/favicon.png',
-		dest: prod,
-		iconsPath: '/',
-		design: {
-			ios: {
-				pictureAspect: 'backgroundAndMargin',
-				backgroundColor: '#ffffff',
-				margin: '14%',
-				assets: {
-					ios6AndPriorIcons: false,
-					ios7AndLaterIcons: false,
-					precomposedIcons: false,
-					declareOnlyDefaultIcon: true
-				}
-			},
-			desktopBrowser: {},
-			windows: {
-				pictureAspect: 'noChange',
-				backgroundColor: '#ffffff',
-				onConflict: 'override',
-				assets: {
-					windows80Ie10Tile: false,
-					windows10Ie11EdgeTiles: {
-						small: false,
-						medium: true,
-						big: false,
-						rectangle: false
-					}
-				}
-			},
-			androidChrome: {
-				pictureAspect: 'noChange',
-				themeColor: '#ffffff',
-				manifest: {
-					display: 'standalone',
-					orientation: 'notSet',
-					onConflict: 'override',
-					declared: true
-				},
-				assets: {
-					legacyIcon: false,
-					lowResolutionIcons: false
-				}
-			},
-			safariPinnedTab: {
-				pictureAspect: 'silhouette',
-				themeColor: '#5bbad5'
-			}
-		},
-		settings: {
-			scalingAlgorithm: 'Mitchell',
-			errorOnImageTooSmall: false
-		},
-		markupFile: FAVICON_DATA_FILE
-	}, function() {
-		done();
-	});
-});
-// Inject the favicon.
-gulp.task('inject-favicon', function() {
-	return gulp.src([ prod + '*.html' ])
-		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
-		.pipe(gulp.dest(prod));
-});
 
 // Watch
 gulp.task('watch', function() {
@@ -298,6 +225,4 @@ gulp.task('deploy', function() {
 	gulp.start('tinypng');
 	gulp.start('cssMin');
 	gulp.start('jsMin');
-	gulp.start('favicon');
-	gulp.start('inject-favicon');
 });
