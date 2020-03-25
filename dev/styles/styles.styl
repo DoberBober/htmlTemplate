@@ -10,6 +10,9 @@ body
 	min-width 320px
 	margin 0
 
+button, input, textarea
+	font-family inherit
+
 *, *::before, *::after
 	box-sizing inherit
 
@@ -36,14 +39,6 @@ img
 	max-width 1170px
 	margin 0 auto
 	padding 0 15px
-
-@media (min-width: 1024px)	
-	body
-		display flex
-		flex-direction column
-		
-	.page
-		flex-grow 1
 
 // @import '../blocks/_mixins/**/*.styl'
 @import '../blocks/*/*.styl'
