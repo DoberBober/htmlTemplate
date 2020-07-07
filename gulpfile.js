@@ -81,7 +81,7 @@ const styles = () => {
 		.pipe(errorNotifier())
 		.pipe(sourcemaps.init())
 		.pipe(stylus())
-		.pipe(postcss(postplugins))
+		// .pipe(postcss(postplugins))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
@@ -253,7 +253,6 @@ exports.default = gulp.parallel(
 	server,
 	images,
 	// libs,
-	// fonts,
 	assets,
 	fonts,
 	pages,

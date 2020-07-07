@@ -1,1 +1,0 @@
-//.footer scripts goes here
