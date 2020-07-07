@@ -22,97 +22,125 @@ const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const uglify = require('gulp-uglify');
 const watch = require('gulp-watch');
+const realFavicon = require ('gulp-real-favicon');
+const fs = require('fs');
+
+const FAVICON_DATA_FILE = 'faviconData.json';
 
 let postplugins = [autoprefixer];
 
-var dev = "./dev/";
-var prod = "./public/";
+const dev = "./dev/";
+const prod = "./public/";
+
+const MANIFEST_INFO = dev + 'root/manifestInfo.json';
 
 /* Main tasks. */
 // Server.
-gulp.task('browserSync', function() {
+const server = () => {
 	browserSync.init({
 		server: {
 			baseDir: "./public"
 		}
 	});
-});
+}
+exports.server = server;
+
 // Images.
-gulp.task('images', function() {
-	gulp.src([dev + 'images/*', dev + 'images/*/*', '!' + dev + 'images/icons', '!' + dev + 'images/icons/*'])
+const images = () => {
+	return gulp.src([dev + 'images/*', dev + 'images/*/*', '!' + dev + 'images/icons', '!' + dev + 'images/icons/*'])
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
-});
+}
+exports.images = images;
+
 // Assets.
-gulp.task('assets', function() {
-	gulp.src([dev + 'assets/*', dev + 'assets/*/*'])
+const assets = () => {
+	return gulp.src([dev + 'assets/*', dev + 'assets/*/*'])
 		.pipe(gulp.dest(prod + 'assets'))
 		.pipe(browserSync.stream());
-});
+}
+exports.assets = assets;
+
 // Fonts.
-gulp.task('fonts', function() {
-	gulp.src(dev + 'fonts/*')
+const fonts = () => {
+	return gulp.src(dev + 'fonts/*')
 		.pipe(gulp.dest(prod + 'fonts'))
 		.pipe(browserSync.stream());
-})
+}
+exports.fonts = fonts;
+
 // Pages.
-gulp.task('pages', function() {
-	gulp.src(dev + 'pages/*.pug')
+const pages = () => {
+	return gulp.src(dev + 'pages/*.pug')
 		.pipe(errorNotifier())
 		.pipe(pug({
 			pretty: '	'
 		}))
 		.pipe(gulp.dest('./public'))
 		.pipe(browserSync.stream());
-})
+}
+exports.pages = pages;
+
 // Styles.
-gulp.task('styles', function() {
-	gulp.src(dev + 'styles/*.styl')
+const styles = () => {
+	return gulp.src(dev + 'styles/*.styl')
 		.pipe(errorNotifier())
 		.pipe(sourcemaps.init())
 		.pipe(stylus())
-		.pipe(postcss(postplugins))
+		// .pipe(postcss(postplugins))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
-})
+}
+exports.styles = styles;
+
 // CSS.
-gulp.task('css', function() {
-	gulp.src(dev + 'styles/*.css')
+const css = () => {
+	return gulp.src(dev + 'styles/*.css')
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
-})
+}
+exports.css = css;
+
 // JS / Block JS.
-gulp.task('scripts', function() {
-	gulp.src([dev + 'blocks/*/*.js', dev + 'js/*.js'])
+const scripts = () => {
+	return gulp.src([dev + 'blocks/*/*.js', dev + 'js/*.js'])
 		.pipe(sourcemaps.init())
 		.pipe(concatJs('main.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
-})
+}
+exports.scripts = scripts;
+
 // Libs.
-gulp.task('libs', function() {
-	gulp.src(mainBowerFiles())
+const libs = () => {
+	return gulp.src(mainBowerFiles())
 		.pipe(gulp.dest(dev + 'libs'));
-});
+}
+exports.libs = libs;
+
 // CSS libs.
-gulp.task('pluginsCss', function() {
-	gulp.src(dev + 'libs/*.css')
+const pluginsCss = () => {
+	return gulp.src(dev + 'libs/*.css')
 		.pipe(concatCss('plugins.css'))
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
-});
+}
+exports.pluginsCss = pluginsCss;
+
 // JS libs.
-gulp.task('pluginsJs', function() {
-	gulp.src(dev + 'libs/*.js')
+const pluginsJs = () => {
+	return gulp.src(dev + 'libs/*.js')
 		.pipe(concatJs('plugins.js'))
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
-});
+}
+exports.pluginsJs = pluginsJs;
+
 // SVG-sprite.
-gulp.task('svgSpriteBuild', function() {
-	gulp.src(dev + 'images/icons/*.svg')
+const svgSpriteBuild = () => {
+	return gulp.src(dev + 'images/icons/*.svg')
 		.pipe(svgmin({
 			js2svg: {
 				pretty: true
@@ -142,90 +170,199 @@ gulp.task('svgSpriteBuild', function() {
 		}))
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
-});
+}
+exports.svgSpriteBuild = svgSpriteBuild;
+
 
 /* Deploy tasks. */
 // Images optimization.
-gulp.task('tinypng', function() {
-	gulp.src(dev + 'images/*.{jpg, jpeg, png}')
+const imageOptimization = () => {
+	return gulp.src(dev + 'images/*.{jpg, jpeg, png}')
 		.pipe(tinypng('KEY'))
 		.pipe(gulp.dest(prod + 'images'));
-});
+}
+exports.imageOptimization = imageOptimization;
+
 // ttf2woff.
-gulp.task('ttf2woff', function() {
-	gulp.src([dev + 'fonts/*.ttf'])
+const ttfToWoff = () => {
+	return gulp.src([dev + 'fonts/*.ttf'])
 		.pipe(ttf2woff())
 		.pipe(gulp.dest(prod + 'fonts'));
-});
+}
+exports.ttfToWoff = ttfToWoff;
+
 // ttf2woff2.
-gulp.task('ttf2woff2', function() {
-	gulp.src([dev + 'fonts/*.ttf'])
+const ttfToWoff2 = () => {
+	return gulp.src([dev + 'fonts/*.ttf'])
 		.pipe(ttf2woff2())
 		.pipe(gulp.dest(prod + 'fonts'));
-});
+}
+exports.ttfToWoff2 = ttfToWoff2;
+
 // CSS minification.
-gulp.task('cssMin', function() {
-	gulp.src([prod + 'css/*.css'])
+const cssMin = () => {
+	return gulp.src([prod + 'css/*.css'])
 		.pipe(cssmin())
 		.pipe(rename({
 			suffix: '.min'
 		}))
 		.pipe(gulp.dest(prod + 'css'));
-});
+}
+exports.cssMin = cssMin;
+
 // JS minification.
-gulp.task('jsMin', function() {
-	gulp.src([prod + 'js/*.js'])
+const jsMin = () => {
+	return gulp.src([prod + 'js/*.js'])
 		.pipe(uglify())
 		.pipe(rename({
 			suffix: '.min'
 		}))
 		.pipe(gulp.dest(prod + 'js'));
-});
+}
+exports.jsMin = jsMin;
+
+// Generate favicons.
+const generateFavicon = (done) => {
+	realFavicon.generateFavicon({
+		masterPicture: dev + 'root/favicon.png',
+		dest: prod,
+		iconsPath: '/',
+		design: {
+			ios: {
+				pictureAspect: 'backgroundAndMargin',
+				backgroundColor: '#000000',
+				margin: '28%',
+				assets: {
+					ios6AndPriorIcons: false,
+					ios7AndLaterIcons: false,
+					precomposedIcons: false,
+					declareOnlyDefaultIcon: true
+				}
+			},
+			desktopBrowser: {
+				design: 'raw'
+			},
+			windows: {
+				pictureAspect: 'noChange',
+				backgroundColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))['windowsThemeColor'],
+				onConflict: 'override',
+				assets: {
+					windows80Ie10Tile: false,
+					windows10Ie11EdgeTiles: {
+						small: false,
+						medium: true,
+						big: false,
+						rectangle: false
+					}
+				}
+			},
+			androidChrome: {
+				pictureAspect: 'noChange',
+				themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))['androidThemeColor'],
+				manifest: {
+					name: JSON.parse(fs.readFileSync(MANIFEST_INFO))['appName'],
+					startUrl: JSON.parse(fs.readFileSync(MANIFEST_INFO))['startUrl'],
+					display: JSON.parse(fs.readFileSync(MANIFEST_INFO))['showingType'],
+					orientation: 'notSet',
+					onConflict: 'override',
+					declared: true
+				},
+				assets: {
+					legacyIcon: false,
+					lowResolutionIcons: false
+				}
+			},
+			safariPinnedTab: {
+				pictureAspect: 'silhouette',
+				themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))['safariPinnedColor']
+			}
+		},
+		settings: {
+			scalingAlgorithm: 'Mitchell',
+			errorOnImageTooSmall: false,
+			readmeFile: false,
+			htmlCodeFile: false,
+			usePathAsIs: false
+		},
+		markupFile: FAVICON_DATA_FILE
+	}, function() {
+		done();
+	});
+}
+exports.generateFavicon = generateFavicon;
+
+// Inject favicons.
+const injectFaviconMarkups = () => {
+	return gulp.src([ prod + '*.html' ])
+		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
+		.pipe(gulp.dest(prod));
+}
+exports.injectFaviconMarkups = injectFaviconMarkups;
+
+// Move root-files.
+const root = () => {
+	return gulp.src([dev + 'root/*', '!' + dev + 'root/favicon.png', '!' + dev + 'root/manifestInfo.json'])
+		.pipe(gulp.dest(prod))
+		.pipe(browserSync.stream());
+}
+exports.root = root;
+
 
 // Watch
-gulp.task('watch', function() {
+const watchFiles = () => {
 	// Assets.
-	watch([dev + 'assets/*'], gulp.parallel('assets'));
-	watch([dev + 'assets/*/*'], gulp.parallel('assets'));
+	watch([dev + 'assets/*'], gulp.parallel(assets));
+	watch([dev + 'assets/*/*'], gulp.parallel(assets));
 	// Images.
-	watch([dev + 'images/*'], gulp.parallel('images'));
-	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], gulp.parallel('images'));
+	watch([dev + 'images/*'], gulp.parallel(images));
+	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], gulp.parallel(images));
 	// Fonts.
-	watch([dev + 'fonts/*'], gulp.parallel('fonts'));
+	watch([dev + 'fonts/*'], gulp.parallel(fonts));
 	// Pages.
-	watch([dev + 'pages/*.pug'], gulp.parallel('pages'));
+	watch([dev + 'pages/*.pug'], gulp.parallel(pages));
 	// Reloader.
-	watch([dev + 'blocks/*/*'], gulp.parallel('pages'));
+	watch([dev + 'blocks/*/*'], gulp.parallel(pages));
 	// Styles.
-	watch([dev + 'styles/*.styl'], gulp.parallel('styles'));
+	watch([dev + 'styles/*.styl'], gulp.parallel(styles));
 	// Block styles.
-	watch([dev + 'blocks/*/*.styl'], gulp.parallel('styles'));
+	watch([dev + 'blocks/*/*.styl'], gulp.parallel(styles));
 	// CSS.
-	watch([dev + 'styles/*.css'], gulp.parallel('css'));
+	watch([dev + 'styles/*.css'], gulp.parallel(css));
 	// JS.
-	watch([dev + 'js/*.js'], gulp.parallel('scripts'));
+	watch([dev + 'js/*.js'], gulp.parallel(scripts));
 	// Block scripts.
-	watch([dev + 'blocks/*/*.js'], gulp.parallel('scripts'));
+	watch([dev + 'blocks/*/*.js'], gulp.parallel(scripts));
 	// CSS libs.
-	watch([dev + 'libs/*.css'], gulp.parallel('pluginsCss'));
+	watch([dev + 'libs/*.css'], gulp.parallel(pluginsCss));
 	// JS libs.
-	watch([dev + 'libs/*.js'], gulp.parallel('pluginsJs'));
+	watch([dev + 'libs/*.js'], gulp.parallel(pluginsJs));
 	// SVG-sprite.
-	watch([dev + 'images/icons/*.svg'], gulp.parallel('svgSpriteBuild'));
-});
+	watch([dev + 'images/icons/*.svg'], gulp.parallel(svgSpriteBuild));
+}
+exports.watchFiles = watchFiles;
 
 // Default.
-// v3 gulp.task('default', ['browserSync', 'images', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'libs', 'watch']);
-gulp.task('default', gulp.parallel('browserSync', 'images', 'assets', 'fonts', 'pages', 'css', 'styles', 'scripts', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
-// v3 gulp.task('default', ['browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch']);
-// gulp.task('default', gulp.parallel('browserSync', 'images', 'libs', 'fonts', 'pages', 'css', 'styles', 'scripts', 'normalize', 'pluginsCss', 'pluginsJs', 'svgSpriteBuild', 'watch'));
+exports.default = gulp.parallel(
+	server,
+	images,
+	// libs,
+	assets,
+	fonts,
+	pages,
+	css,
+	styles,
+	scripts,
+	pluginsCss,
+	pluginsJs,
+	svgSpriteBuild,
+	watchFiles
+)
+
+// Favicons.
+const favicons = gulp.series(generateFavicon, injectFaviconMarkups);
+exports.favicons = favicons;
 
 
 // Deploy.
-gulp.task('deploy', function() {
-	gulp.start('ttf2woff');
-	gulp.start('ttf2woff2');
-	gulp.start('tinypng');
-	gulp.start('cssMin');
-	gulp.start('jsMin');
-});
+const deploy = gulp.parallel(ttfToWoff, ttfToWoff2, imageOptimization, cssMin, jsMin, favicons, root);
+exports.deploy = deploy;
