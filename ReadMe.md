@@ -23,6 +23,7 @@
 		* icons (SVG-icons for sprite.)
 	- js
 	- libs (will be merged into plugins.css/js)
+		* notConcat (CSS/JS in this folder will not concatenated)
 	- pages
 	- root
 		* _favicon.png_ (will be generated favicon-files)
