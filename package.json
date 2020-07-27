@@ -30,7 +30,6 @@
     "gulp-ttf2woff": "^1.1.0",
     "gulp-ttf2woff2": "^3.0.0",
     "gulp-uglify": "^3.0.2",
-    "gulp-watch": "^5.0.1",
     "main-bower-files": "^2.13.3",
     "pug": "^3.0.0"
   },

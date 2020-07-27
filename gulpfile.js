@@ -21,7 +21,6 @@ const tinypng = require('gulp-tinypng');
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const uglify = require('gulp-uglify');
-const watch = require('gulp-watch');
 const realFavicon = require ('gulp-real-favicon');
 const fs = require('fs');
 
@@ -137,6 +136,22 @@ const pluginsJs = () => {
 		.pipe(browserSync.stream());
 }
 exports.pluginsJs = pluginsJs;
+
+// Move CSS-files.
+const moveCss = () => {
+	return gulp.src(dev + 'libs/notConcat/*.css')
+		.pipe(gulp.dest(prod + 'css'))
+		.pipe(browserSync.stream());
+}
+exports.moveCss = moveCss;
+
+// Move JS-files.
+const moveJs = () => {
+	return gulp.src(dev + 'libs/notConcat/*.js')
+		.pipe(gulp.dest(prod + 'js'))
+		.pipe(browserSync.stream());
+}
+exports.moveJs = moveJs;
 
 // SVG-sprite.
 const svgSpriteBuild = () => {
@@ -311,33 +326,29 @@ exports.root = root;
 // Watch
 const watchFiles = () => {
 	// Assets.
-	watch([dev + 'assets/*'], gulp.parallel(assets));
-	watch([dev + 'assets/*/*'], gulp.parallel(assets));
+	gulp.watch([dev + 'assets/**/*'], gulp.series(assets));
 	// Images.
-	watch([dev + 'images/*'], gulp.parallel(images));
-	watch([dev + 'images/*/*', '!' + dev + 'images/icons/*'], gulp.parallel(images));
+	gulp.watch([dev + 'images/**/*', '!' + dev + 'images/icons/*'], gulp.series(images));
 	// Fonts.
-	watch([dev + 'fonts/*'], gulp.parallel(fonts));
+	gulp.watch([dev + 'fonts/*'], gulp.series(fonts));
 	// Pages.
-	watch([dev + 'pages/*.pug'], gulp.parallel(pages));
-	// Reloader.
-	watch([dev + 'blocks/*/*'], gulp.parallel(pages));
-	// Styles.
-	watch([dev + 'styles/*.styl'], gulp.parallel(styles));
-	// Block styles.
-	watch([dev + 'blocks/*/*.styl'], gulp.parallel(styles));
+	gulp.watch([dev + 'pages/*.pug', dev + 'blocks/*/*'], gulp.series(pages));
+	// Styles and block styles.
+	gulp.watch([dev + 'styles/*.styl', dev + 'blocks/*/*.styl'], gulp.series(styles));
 	// CSS.
-	watch([dev + 'styles/*.css'], gulp.parallel(css));
-	// JS.
-	watch([dev + 'js/*.js'], gulp.parallel(scripts));
-	// Block scripts.
-	watch([dev + 'blocks/*/*.js'], gulp.parallel(scripts));
+	gulp.watch([dev + 'styles/*.css'], gulp.series(css));
+	// JS and block js.
+	gulp.watch([dev + 'js/*.js', dev + 'blocks/*/*.js'], gulp.series(scripts));
 	// CSS libs.
-	watch([dev + 'libs/*.css'], gulp.parallel(pluginsCss));
+	gulp.watch([dev + 'libs/*.css'], gulp.series(pluginsCss));
 	// JS libs.
-	watch([dev + 'libs/*.js'], gulp.parallel(pluginsJs));
+	gulp.watch([dev + 'libs/*.js'], gulp.series(pluginsJs));
+	// CSS not libs.
+	gulp.watch([dev + 'libs/notConcat/*.css'], gulp.series(moveCss));
+	// JS not libs.
+	gulp.watch([dev + 'libs/notConcat/*.js'], gulp.series(moveJs));
 	// SVG-sprite.
-	watch([dev + 'images/icons/*.svg'], gulp.parallel(svgSpriteBuild));
+	gulp.watch([dev + 'images/icons/*.svg'], gulp.series(svgSpriteBuild));
 }
 exports.watchFiles = watchFiles;
 
@@ -354,6 +365,8 @@ exports.default = gulp.parallel(
 	scripts,
 	pluginsCss,
 	pluginsJs,
+	moveCss,
+	moveJs,
 	svgSpriteBuild,
 	watchFiles
 )
