@@ -46,7 +46,7 @@ exports.server = server;
 
 // Images.
 const images = () => {
-	return gulp.src([dev + 'images/*', dev + 'images/*/*', '!' + dev + 'images/icons', '!' + dev + 'images/icons/*'])
+	return gulp.src([dev + 'images/*', dev + 'images/**/*', '!' + dev + 'images/icons', '!' + dev + 'images/icons/*'])
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
 }
@@ -54,7 +54,7 @@ exports.images = images;
 
 // Assets.
 const assets = () => {
-	return gulp.src([dev + 'assets/*', dev + 'assets/*/*'])
+	return gulp.src([dev + 'assets/*', dev + 'assets/**/*'])
 		.pipe(gulp.dest(prod + 'assets'))
 		.pipe(browserSync.stream());
 }
