@@ -20,7 +20,7 @@ const svgSprite = require('gulp-svg-sprite');
 const tinypng = require('gulp-tinypng');
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const realFavicon = require ('gulp-real-favicon');
 const fs = require('fs');
 
