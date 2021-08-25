@@ -53,7 +53,7 @@ const assets = () => {
 exports.assets = assets;
 
 // Images.
-const assets = () => {
+const images = () => {
 	return gulp.src([dev + 'images/*', dev + 'images/**/*'])
 		.pipe(gulp.dest(prod + 'images'))
 		.pipe(browserSync.stream());
