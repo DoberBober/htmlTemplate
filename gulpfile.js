@@ -44,21 +44,21 @@ const server = () => {
 }
 exports.server = server;
 
-// Images.
-const images = () => {
-	return gulp.src([dev + 'images/*', dev + 'images/**/*', '!' + dev + 'images/icons', '!' + dev + 'images/icons/*'])
-		.pipe(gulp.dest(prod + 'images'))
-		.pipe(browserSync.stream());
-}
-exports.images = images;
-
 // Assets.
 const assets = () => {
-	return gulp.src([dev + 'assets/*', dev + 'assets/**/*'])
+	return gulp.src([dev + 'assets/*', dev + 'assets/**/*', '!' + dev + 'assets/icons', '!' + dev + 'assets/icons/*'])
 		.pipe(gulp.dest(prod + 'assets'))
 		.pipe(browserSync.stream());
 }
 exports.assets = assets;
+
+// Images.
+const assets = () => {
+	return gulp.src([dev + 'images/*', dev + 'images/**/*'])
+		.pipe(gulp.dest(prod + 'images'))
+		.pipe(browserSync.stream());
+}
+exports.images = images;
 
 // Fonts.
 const fonts = () => {
@@ -155,7 +155,7 @@ exports.moveJs = moveJs;
 
 // SVG-sprite.
 const svgSpriteBuild = () => {
-	return gulp.src(dev + 'images/icons/*.svg')
+	return gulp.src(dev + 'assets/icons/*.svg')
 		.pipe(svgmin({
 			js2svg: {
 				pretty: true
@@ -183,7 +183,7 @@ const svgSpriteBuild = () => {
 				}
 			}
 		}))
-		.pipe(gulp.dest(prod + 'images'))
+		.pipe(gulp.dest(prod + 'assets'))
 		.pipe(browserSync.stream());
 }
 exports.svgSpriteBuild = svgSpriteBuild;
@@ -192,9 +192,9 @@ exports.svgSpriteBuild = svgSpriteBuild;
 /* Deploy tasks. */
 // Images optimization.
 const imageOptimization = () => {
-	return gulp.src(dev + 'images/*.{jpg, jpeg, png}')
+	return gulp.src(dev + 'assets/*.{jpg, jpeg, png}')
 		.pipe(tinypng('KEY'))
-		.pipe(gulp.dest(prod + 'images'));
+		.pipe(gulp.dest(prod + 'assets'));
 }
 exports.imageOptimization = imageOptimization;
 
@@ -326,9 +326,9 @@ exports.root = root;
 // Watch
 const watchFiles = () => {
 	// Assets.
-	gulp.watch([dev + 'assets/**/*'], gulp.series(assets));
+	gulp.watch([dev + 'assets/**/*', '!' + dev + 'assets/icons/*'], gulp.series(assets));
 	// Images.
-	gulp.watch([dev + 'images/**/*', '!' + dev + 'images/icons/*'], gulp.series(images));
+	gulp.watch([dev + 'images/**/*'], gulp.series(images));
 	// Fonts.
 	gulp.watch([dev + 'fonts/*'], gulp.series(fonts));
 	// Pages.
@@ -348,7 +348,7 @@ const watchFiles = () => {
 	// JS not libs.
 	gulp.watch([dev + 'libs/notConcat/*.js'], gulp.series(moveJs));
 	// SVG-sprite.
-	gulp.watch([dev + 'images/icons/*.svg'], gulp.series(svgSpriteBuild));
+	gulp.watch([dev + 'assets/icons/*.svg'], gulp.series(svgSpriteBuild));
 }
 exports.watchFiles = watchFiles;
 
