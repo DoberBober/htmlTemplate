@@ -332,7 +332,7 @@ const watchFiles = () => {
 	// Fonts.
 	gulp.watch([dev + 'fonts/*'], gulp.series(fonts));
 	// Pages.
-	gulp.watch([dev + 'pages/*.pug', dev + 'blocks/**/*'], gulp.series(pages));
+	gulp.watch([dev + 'pages/*.pug', dev + 'blocks/**/*.pug'], gulp.series(pages));
 	// Styles and block styles.
 	gulp.watch([dev + 'styles/*.styl', dev + 'blocks/**/*.styl'], gulp.series(styles));
 	// CSS.
