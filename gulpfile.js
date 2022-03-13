@@ -332,13 +332,13 @@ const watchFiles = () => {
 	// Fonts.
 	gulp.watch([dev + 'fonts/*'], gulp.series(fonts));
 	// Pages.
-	gulp.watch([dev + 'pages/*.pug', dev + 'blocks/**/*.pug'], gulp.series(pages));
+	gulp.watch([dev + 'pages/**/*.pug', dev + 'blocks/**/*.pug'], gulp.series(pages));
 	// Styles and block styles.
-	gulp.watch([dev + 'styles/*.styl', dev + 'blocks/**/*.styl'], gulp.series(styles));
+	gulp.watch([dev + 'styles/**/*.styl', dev + 'blocks/**/*.styl'], gulp.series(styles));
 	// CSS.
 	gulp.watch([dev + 'styles/*.css'], gulp.series(css));
 	// JS and block js.
-	gulp.watch([dev + 'js/*.js', dev + 'blocks/*/*.js'], gulp.series(scripts));
+	gulp.watch([dev + 'js/**/*.js', dev + 'blocks/**/*.js'], gulp.series(scripts));
 	// CSS libs.
 	gulp.watch([dev + 'libs/*.css'], gulp.series(pluginsCss));
 	// JS libs.
