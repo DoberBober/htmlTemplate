@@ -13,7 +13,7 @@ const BLOCKS_DIR = path.join(__dirname, 'dev/blocks');
 // default content for files in new block
 const fileSources = {
 	pug : `.{blockName}\n`,
-  styl: `.{blockName}\n    display block\n`,
+  styl: `.{blockName}\n\tdisplay block\n`,
 	js  : `//.{blockName} scripts goes here\n`,
 };
 

@@ -12,8 +12,8 @@ const BLOCKS_DIR = path.join(__dirname, 'dev/blocks/_mixins');
 
 // default content for files in new block
 const fileSources = {
-	pug : `mixin {blockName}()\n    .{blockName} block\n`,
-  styl: `.{blockName}\n    display block\n`,
+	pug : `mixin {blockName}()\n\t.{blockName} block\n`,
+  styl: `.{blockName}\n\tdisplay block\n`,
 	js  : `//.{blockName} scripts goes here\n`,
 };
 
