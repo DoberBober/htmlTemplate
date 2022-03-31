@@ -4,21 +4,26 @@
 html
 	height 100%
 	box-sizing border-box
+	scroll-behavior smooth
 
 body
 	min-height 100%
 	min-width 320px
 	margin 0
 
+*, *::before, *::after
+	box-sizing inherit
+
 button, input, textarea
 	font-family inherit
 
-*, *::before, *::after
-	box-sizing inherit
+button
+	cursor pointer
 
 img
 	max-width 100%
 	height auto
+	image-rendering -webkit-optimize-contrast
 
 .sprite
 	display none
@@ -34,6 +39,22 @@ img
 	white-space nowrap
 	clip rect(0,0,0,0)
 	clip-path inset(100%)
+
+.onlyMobile
+	@media(min-width tablet)
+		display none !important
+
+.onlyDesktop
+	@media(max-width desktop - 1px)
+		display none !important
+
+.upToDesktop
+	@media(min-width desktop)
+		display none !important
+
+.fromMobile
+	@media(max-width tablet - 1px)
+		display none !important
 
 .container
 	max-width 1170px

@@ -23,3 +23,6 @@ trim_trailing_whitespace = false
 
 [*.js]
 max_line_length = 256
+
+[*.pug]
+trim_trailing_whitespace = false

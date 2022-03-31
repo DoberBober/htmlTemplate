@@ -12,3 +12,12 @@ ft(min, max)
 	diff = (max - min)
 	value = 'calc(%s + %s * (%s - %s) / %s)' % (rem diff 100vw 320px 990)
 	font-size value
+
+fMobileCol(columnCount)
+	width "calc((100% - 48px) / 6 * %s + ((%s - 1) * 8px))"  % (columnCount columnCount)
+
+fTabletCol(columnCount)
+	width "calc((100% - 64px) / 9 * %s + ((%s - 1) * 8px))"  % (columnCount columnCount)
+
+fDesktopCol(columnCount)
+	width "calc((100% - 88px) / 12 * %s + ((%s - 1) * 8px))"  % (columnCount columnCount)
