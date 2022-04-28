@@ -103,7 +103,7 @@ exports.css = css;
 
 // JS / Block JS.
 const scripts = () => {
-	return gulp.src([dev + 'js/*.js', dev + 'blocks/*/*.js'], {"allowEmpty": true})
+	return gulp.src([dev + 'js/*.js', dev + 'blocks/**/*.js'], {"allowEmpty": true})
 		.pipe(sourcemaps.init())
 		.pipe(concatJs('main.js'))
 		.pipe(sourcemaps.write())
