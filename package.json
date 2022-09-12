@@ -32,6 +32,7 @@
     "gulp-ttf2woff2": "^4.0.1",
     "gulp-uglify-es": "^3.0.0",
     "main-bower-files": "^2.13.3",
+    "postcss": "^8.4.16",
     "pug": "^3.0.0"
   },
   "dependencies": {
