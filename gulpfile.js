@@ -123,6 +123,7 @@ exports.libs = libs;
 const pluginsCss = () => {
 	return gulp.src(dev + 'libs/*.css')
 		.pipe(concatCss('plugins.css'))
+		.pipe(cssmin())
 		.pipe(gulp.dest(prod + 'css'))
 		.pipe(browserSync.stream());
 }
@@ -132,6 +133,7 @@ exports.pluginsCss = pluginsCss;
 const pluginsJs = () => {
 	return gulp.src(dev + 'libs/*.js')
 		.pipe(concatJs('plugins.js'))
+		.pipe(uglify())
 		.pipe(gulp.dest(prod + 'js'))
 		.pipe(browserSync.stream());
 }
