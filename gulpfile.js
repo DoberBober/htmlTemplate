@@ -114,10 +114,12 @@ exports.css = css;
 // JS / Block JS.
 const scripts = () => {
 	return gulp
-		.src([dev + "js/*.js", dev + "blocks/**/*.js"], { allowEmpty: true })
+		.src([dev + "js/*.js", "!" + dev + "js/seo.js", dev + "blocks/**/*.js"], { allowEmpty: true })
 		.pipe(sourcemaps.init())
 		.pipe(concatJs("main.js"))
 		.pipe(sourcemaps.write("."))
+		.pipe(gulp.dest(prod + "js"))
+		.pipe(gulp.src([dev + "js/seo.js"], { allowEmpty: true }))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
 };
