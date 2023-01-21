@@ -11,6 +11,5 @@
 	"htmlWhitespaceSensitivity": "css",
 	"arrow-parens": "always",
 	"quoteProps": "consistent",
-	"vueIndentScriptAndStyle": true,
-	"stylelintIntegration": true
+	"vueIndentScriptAndStyle": true
 }
