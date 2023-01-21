@@ -1,0 +1,16 @@
+{
+	"parser": "html",
+	"useTabs": true,
+	"tabWidth": 4,
+	"endOfLine": "lf",
+	"bracketSpacing": true,
+	"printWidth": 80,
+	"trailingComma": "es5",
+	"semi": true,
+	"bracketSameLine": false,
+	"htmlWhitespaceSensitivity": "css",
+	"arrow-parens": "always",
+	"quoteProps": "consistent",
+	"vueIndentScriptAndStyle": true,
+	"stylelintIntegration": true
+}
