@@ -39,6 +39,9 @@ const server = () => {
 	browserSync.init({
 		server: {
 			baseDir: "./public",
+			serveStaticOptions: {
+				extensions: ["html"],
+			},
 		},
 	});
 };
