@@ -2,12 +2,14 @@
 
 const autoprefixer = require("autoprefixer");
 const browserSync = require("browser-sync").create();
+const cached = require("gulp-cached");
 const cheerio = require("gulp-cheerio");
 const concatCss = require("gulp-concat-css");
 const concatJs = require("gulp-concat");
-const cssmin = require("gulp-cssmin");
+const csso = require("gulp-csso");
 const errorNotifier = require("gulp-error-notifier");
 const gulp = require("gulp");
+const mainBowerFiles = require("main-bower-files");
 const postcss = require("gulp-postcss");
 const pug = require("gulp-pug");
 const rename = require("gulp-rename");
@@ -17,6 +19,7 @@ const stylus = require("gulp-stylus");
 const svgmin = require("gulp-svgmin");
 const svgSprite = require("gulp-svg-sprite");
 const tinypng = require("gulp-tinypng");
+const ttf2woff = require("gulp-ttf2woff");
 const ttf2woff2 = require("gulp-ttf2woff2");
 const uglify = require("gulp-uglify-es").default;
 const realFavicon = require("gulp-real-favicon");
@@ -82,6 +85,7 @@ const pages = () => {
 				pretty: "	",
 			})
 		)
+		.pipe(cached("pug"))
 		.pipe(gulp.dest("./public"))
 		.pipe(browserSync.stream());
 };
@@ -96,6 +100,13 @@ const styles = () => {
 			.pipe(sourcemaps.init())
 			.pipe(stylus())
 			// .pipe(postcss(postplugins))
+			.pipe(gulp.dest(prod + "css"))
+			.pipe(csso())
+			.pipe(
+				rename({
+					suffix: ".min",
+				})
+			)
 			.pipe(sourcemaps.write("."))
 			.pipe(gulp.dest(prod + "css"))
 			.pipe(browserSync.stream())
@@ -115,23 +126,41 @@ exports.css = css;
 // JS / Block JS.
 const scripts = () => {
 	return gulp
-		.src([dev + "js/*.js", "!" + dev + "js/seo.js", dev + "blocks/**/*.js"], { allowEmpty: true })
+		.src([dev + "js/*.js", dev + "blocks/**/*.js"])
 		.pipe(sourcemaps.init())
 		.pipe(concatJs("main.js"))
-		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "js"))
-		.pipe(gulp.src([dev + "js/seo.js"], { allowEmpty: true }))
+		.pipe(
+			rename({
+				suffix: ".min",
+			})
+		)
+		.pipe(uglify())
+		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
 };
 exports.scripts = scripts;
+
+// Libs.
+const libs = () => {
+	return gulp.src(mainBowerFiles()).pipe(gulp.dest(dev + "libs"));
+};
+exports.libs = libs;
 
 // CSS libs.
 const pluginsCss = () => {
 	return gulp
 		.src(dev + "libs/*.css")
 		.pipe(concatCss("plugins.css"))
-		.pipe(cssmin())
+		.pipe(gulp.dest(prod + "css"))
+		.pipe(csso())
+		.pipe(
+			rename({
+				suffix: ".min",
+			})
+		)
+		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(browserSync.stream());
 };
@@ -142,7 +171,14 @@ const pluginsJs = () => {
 	return gulp
 		.src(dev + "libs/*.js")
 		.pipe(concatJs("plugins.js"))
+		.pipe(gulp.dest(prod + "js"))
+		.pipe(
+			rename({
+				suffix: ".min",
+			})
+		)
 		.pipe(uglify())
+		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
 };
@@ -218,6 +254,15 @@ const imageOptimization = () => {
 };
 exports.imageOptimization = imageOptimization;
 
+// ttf2woff.
+const ttfToWoff = () => {
+	return gulp
+		.src([dev + "fonts/*.ttf"])
+		.pipe(ttf2woff())
+		.pipe(gulp.dest(prod + "fonts"));
+};
+exports.ttfToWoff = ttfToWoff;
+
 // ttf2woff2.
 const ttfToWoff2 = () => {
 	return gulp
@@ -231,7 +276,7 @@ exports.ttfToWoff2 = ttfToWoff2;
 const cssMin = () => {
 	return gulp
 		.src([prod + "css/*.css"])
-		.pipe(cssmin())
+		.pipe(csso())
 		.pipe(
 			rename({
 				suffix: ".min",
@@ -355,13 +400,13 @@ const watchFiles = () => {
 	// Fonts.
 	gulp.watch([dev + "fonts/*"], gulp.series(fonts));
 	// Pages.
-	gulp.watch([dev + "pages/**/*.pug", dev + "blocks/**/*.pug"], gulp.series(pages));
+	gulp.watch([dev + "pages/*.pug", dev + "blocks/**/*.pug"], gulp.series(pages));
 	// Styles and block styles.
-	gulp.watch([dev + "styles/**/*.styl", dev + "blocks/**/*.styl"], gulp.series(styles));
+	gulp.watch([dev + "styles/*.styl", dev + "blocks/**/*.styl"], gulp.series(styles));
 	// CSS.
 	gulp.watch([dev + "styles/*.css"], gulp.series(css));
 	// JS and block js.
-	gulp.watch([dev + "js/**/*.js", dev + "blocks/**/*.js"], gulp.series(scripts));
+	gulp.watch([dev + "js/*.js", dev + "blocks/**/*.js"], gulp.series(scripts));
 	// CSS libs.
 	gulp.watch([dev + "libs/*.css"], gulp.series(pluginsCss));
 	// JS libs.
@@ -379,6 +424,7 @@ exports.watchFiles = watchFiles;
 exports.default = gulp.parallel(
 	server,
 	images,
+	// libs,
 	assets,
 	fonts,
 	pages,
@@ -398,5 +444,5 @@ const favicons = gulp.series(generateFavicon, injectFaviconMarkups);
 exports.favicons = favicons;
 
 // Deploy.
-const deploy = gulp.parallel(ttfToWoff2, imageOptimization, cssMin, jsMin, favicons, root);
+const deploy = gulp.parallel(ttfToWoff, ttfToWoff2, imageOptimization, cssMin, jsMin, favicons, root);
 exports.deploy = deploy;
