@@ -2,13 +2,14 @@
 
 - Install plugins: `npm install`.
 - For create block: `node block %blockname% `.
+- For create mixin: `node mixin %blockname% `.
 
 <!--  -->
 
 # Tasks: #
 - default.
 - `favicons` (create and inject favicons).
-- `deploy` (convert fonts (ttf->woff/woff2), optimize images, minify css/js, create/injects favicons, move root-files).
+- `deploy` (optimize images, minify css/js, create/injects favicons, move root-files).
 
 <!--  -->
 
