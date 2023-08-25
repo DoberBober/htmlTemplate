@@ -1,6 +1,5 @@
 "use strict";
 
-const autoprefixer = require("autoprefixer");
 const browserSync = require("browser-sync").create();
 const cached = require("gulp-cached");
 const cheerio = require("gulp-cheerio");
@@ -9,7 +8,6 @@ const concatJs = require("gulp-concat");
 const csso = require("gulp-csso");
 const errorNotifier = require("gulp-error-notifier");
 const gulp = require("gulp");
-const postcss = require("gulp-postcss");
 const pug = require("gulp-pug");
 const rename = require("gulp-rename");
 const replace = require("gulp-replace");
@@ -23,8 +21,6 @@ const realFavicon = require("gulp-real-favicon");
 const fs = require("fs");
 
 const FAVICON_DATA_FILE = "faviconData.json";
-
-let postplugins = [autoprefixer];
 
 const dev = "./dev/";
 const prod = "./public/";
@@ -48,7 +44,12 @@ exports.server = server;
 // Assets.
 const assets = () => {
 	return gulp
-		.src([dev + "assets/*", dev + "assets/**/*", "!" + dev + "assets/icons", "!" + dev + "assets/icons/*"])
+		.src([
+			dev + "assets/*",
+			dev + "assets/**/*",
+			"!" + dev + "assets/icons",
+			"!" + dev + "assets/icons/*",
+		])
 		.pipe(gulp.dest(prod + "assets"))
 		.pipe(browserSync.stream());
 };
@@ -90,24 +91,21 @@ exports.pages = pages;
 
 // Styles.
 const styles = () => {
-	return (
-		gulp
-			.src(dev + "styles/*.styl")
-			.pipe(errorNotifier())
-			.pipe(sourcemaps.init())
-			.pipe(stylus())
-			// .pipe(postcss(postplugins))
-			.pipe(gulp.dest(prod + "css"))
-			.pipe(csso())
-			.pipe(
-				rename({
-					suffix: ".min",
-				})
-			)
-			.pipe(sourcemaps.write("."))
-			.pipe(gulp.dest(prod + "css"))
-			.pipe(browserSync.stream())
-	);
+	return gulp
+		.src(dev + "styles/*.styl")
+		.pipe(errorNotifier())
+		.pipe(sourcemaps.init())
+		.pipe(stylus())
+		.pipe(gulp.dest(prod + "css"))
+		.pipe(csso())
+		.pipe(
+			rename({
+				suffix: ".min",
+			})
+		)
+		.pipe(sourcemaps.write("."))
+		.pipe(gulp.dest(prod + "css"))
+		.pipe(browserSync.stream());
 };
 exports.styles = styles;
 
@@ -297,7 +295,9 @@ const generateFavicon = (done) => {
 				},
 				windows: {
 					pictureAspect: "noChange",
-					backgroundColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))["windowsThemeColor"],
+					backgroundColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
+						"windowsThemeColor"
+					],
 					onConflict: "override",
 					assets: {
 						windows80Ie10Tile: false,
@@ -311,11 +311,19 @@ const generateFavicon = (done) => {
 				},
 				androidChrome: {
 					pictureAspect: "noChange",
-					themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))["androidThemeColor"],
+					themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
+						"androidThemeColor"
+					],
 					manifest: {
-						name: JSON.parse(fs.readFileSync(MANIFEST_INFO))["appName"],
-						startUrl: JSON.parse(fs.readFileSync(MANIFEST_INFO))["startUrl"],
-						display: JSON.parse(fs.readFileSync(MANIFEST_INFO))["showingType"],
+						name: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
+							"appName"
+						],
+						startUrl: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
+							"startUrl"
+						],
+						display: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
+							"showingType"
+						],
 						orientation: "notSet",
 						onConflict: "override",
 						declared: true,
@@ -327,7 +335,9 @@ const generateFavicon = (done) => {
 				},
 				safariPinnedTab: {
 					pictureAspect: "silhouette",
-					themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))["safariPinnedColor"],
+					themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
+						"safariPinnedColor"
+					],
 				},
 			},
 			settings: {
@@ -350,7 +360,11 @@ exports.generateFavicon = generateFavicon;
 const injectFaviconMarkups = () => {
 	return gulp
 		.src([prod + "*.html"])
-		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
+		.pipe(
+			realFavicon.injectFaviconMarkups(
+				JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code
+			)
+		)
 		.pipe(gulp.dest(prod));
 };
 exports.injectFaviconMarkups = injectFaviconMarkups;
@@ -358,7 +372,11 @@ exports.injectFaviconMarkups = injectFaviconMarkups;
 // Move root-files.
 const root = () => {
 	return gulp
-		.src([dev + "root/*", "!" + dev + "root/favicon.png", "!" + dev + "root/manifestInfo.json"])
+		.src([
+			dev + "root/*",
+			"!" + dev + "root/favicon.png",
+			"!" + dev + "root/manifestInfo.json",
+		])
 		.pipe(gulp.dest(prod))
 		.pipe(browserSync.stream());
 };
@@ -367,15 +385,24 @@ exports.root = root;
 // Watch
 const watchFiles = () => {
 	// Assets.
-	gulp.watch([dev + "assets/**/*", "!" + dev + "assets/icons/*"], gulp.series(assets));
+	gulp.watch(
+		[dev + "assets/**/*", "!" + dev + "assets/icons/*"],
+		gulp.series(assets)
+	);
 	// Images.
 	gulp.watch([dev + "images/**/*"], gulp.series(images));
 	// Fonts.
 	gulp.watch([dev + "fonts/*"], gulp.series(fonts));
 	// Pages.
-	gulp.watch([dev + "pages/*.pug", dev + "blocks/**/*.pug"], gulp.series(pages));
+	gulp.watch(
+		[dev + "pages/*.pug", dev + "blocks/**/*.pug"],
+		gulp.series(pages)
+	);
 	// Styles and block styles.
-	gulp.watch([dev + "styles/*.styl", dev + "blocks/**/*.styl"], gulp.series(styles));
+	gulp.watch(
+		[dev + "styles/*.styl", dev + "blocks/**/*.styl"],
+		gulp.series(styles)
+	);
 	// CSS.
 	gulp.watch([dev + "styles/*.css"], gulp.series(css));
 	// JS and block js.
