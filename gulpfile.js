@@ -96,6 +96,7 @@ const styles = () => {
 		.pipe(errorNotifier())
 		.pipe(sourcemaps.init())
 		.pipe(stylus())
+		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(csso())
 		.pipe(
@@ -149,7 +150,6 @@ const pluginsCss = () => {
 				suffix: ".min",
 			})
 		)
-		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(browserSync.stream());
 };
@@ -167,7 +167,6 @@ const pluginsJs = () => {
 			})
 		)
 		.pipe(uglify())
-		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
 };
