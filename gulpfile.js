@@ -98,7 +98,9 @@ const styles = () => {
 		.pipe(stylus())
 		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
-		.pipe(csso())
+		.pipe(csso({
+			restructure: false,
+		))
 		.pipe(
 			rename({
 				suffix: ".min",
