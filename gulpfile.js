@@ -100,7 +100,7 @@ const styles = () => {
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(csso({
 			restructure: false,
-		))
+		}))
 		.pipe(
 			rename({
 				suffix: ".min",
