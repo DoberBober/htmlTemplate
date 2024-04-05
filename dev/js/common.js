@@ -6,12 +6,19 @@ window.addEventListener("resize", appHeight);
 appHeight();
 
 function sendData(form) {
-	let action = form.getAttribute("action");
-	let method = form.getAttribute("method") ? form.getAttribute("method") : "POST"
-	let FD = new FormData(form);
+	return new Promise((resolve, reject) => {
+		var action = form.getAttribute("action");
+		var XHR = new XMLHttpRequest();
+		var FD = new FormData(form);
 
-	return fetch(action, {
-		method: method,
-		body: FD,
+		XHR.onload = () => {
+			if (XHR.status == 200) {
+				resolve(XHR.response);
+			}
+		};
+
+		XHR.onerror = () => reject(XHR.statusText);
+		XHR.open(form.getAttribute("method") ? form.getAttribute("method") : "POST", action);
+		XHR.send(FD);
 	});
 }
