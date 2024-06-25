@@ -1,6 +1,6 @@
 "use strict";
 
-const browserSync = require("browser-sync").create();
+const browserSync = require("browser-sync");
 const cached = require("gulp-cached");
 const cheerio = require("gulp-cheerio");
 const concatCss = require("gulp-concat-css");
@@ -15,8 +15,8 @@ const sourcemaps = require("gulp-sourcemaps");
 const stylus = require("gulp-stylus");
 const svgmin = require("gulp-svgmin");
 const svgSprite = require("gulp-svg-sprite");
+const terser = require("gulp-terser");
 const tinypng = require("gulp-tinypng");
-const uglify = require("gulp-uglify-es").default;
 const realFavicon = require("gulp-real-favicon");
 const fs = require("fs");
 
@@ -98,9 +98,11 @@ const styles = () => {
 		.pipe(stylus())
 		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
-		.pipe(csso({
-			restructure: false,
-		}))
+		.pipe(
+			csso({
+				restructure: false,
+			})
+		)
 		.pipe(
 			rename({
 				suffix: ".min",
@@ -133,7 +135,7 @@ const scripts = () => {
 				suffix: ".min",
 			})
 		)
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
@@ -168,7 +170,7 @@ const pluginsJs = () => {
 				suffix: ".min",
 			})
 		)
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
 };
@@ -262,7 +264,7 @@ exports.cssMin = cssMin;
 const jsMin = () => {
 	return gulp
 		.src([prod + "js/*.js"])
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(
 			rename({
 				suffix: ".min",
