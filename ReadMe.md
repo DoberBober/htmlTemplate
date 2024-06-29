@@ -1,6 +1,5 @@
 # Install: #
 
-- Install plugins: `npm install`.
 - For create block: `node block %blockname% `.
 - For create mixin: `node mixin %blockname% `.
 
@@ -23,6 +22,7 @@
 	- images
 		* icons (SVG-icons for sprite.)
 	- js
+	- layouts
 	- libs (will be merged into plugins.css/js)
 		* notConcat (CSS/JS in this folder will not concatenated)
 	- pages

@@ -76,7 +76,7 @@ exports.fonts = fonts;
 // Pages.
 const pages = () => {
 	return gulp
-		.src(dev + "pages/*.pug")
+		.src([dev + "layouts/*.pug", dev + "pages/*.pug"])
 		.pipe(errorNotifier())
 		.pipe(
 			pug({
@@ -398,7 +398,7 @@ const watchFiles = () => {
 	gulp.watch([dev + "fonts/*"], gulp.series(fonts));
 	// Pages.
 	gulp.watch(
-		[dev + "pages/*.pug", dev + "blocks/**/*.pug"],
+		[dev + "layouts/*.pug", dev + "pages/*.pug", dev + "blocks/**/*.pug"],
 		gulp.series(pages)
 	);
 	// Styles and block styles.
