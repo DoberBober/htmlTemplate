@@ -1,24 +1,37 @@
-function appHeight() {
-	const doc = document.documentElement;
-	doc.style.setProperty("--app-height", `${window.innerHeight}px`);
-}
-window.addEventListener("resize", appHeight);
-appHeight();
+/**
+ * Отправляет или запрашивает данные.
+ * @param {?HTMLElement} form - Форма. Или можно передать data.
+ * @param {?string} action - URL сервера. Если не передано - берётся у form.
+ * @param {?data} data - Данные, которые надо передать (если нет form).
+ * @param {?string} method - Метод. По умолчанию "POST".
+ */
 
-function sendData(form) {
-	return new Promise((resolve, reject) => {
-		var action = form.getAttribute("action");
-		var XHR = new XMLHttpRequest();
-		var FD = new FormData(form);
+async function sendData(form, action, data, method) {
+	let url = action ? action : form.action;
 
-		XHR.onload = () => {
-			if (XHR.status == 200) {
-				resolve(XHR.response);
-			}
-		};
+	let options = {
+		method: method ? method : "POST",
+	};
 
-		XHR.onerror = () => reject(XHR.statusText);
-		XHR.open(form.getAttribute("method") ? form.getAttribute("method") : "POST", action);
-		XHR.send(FD);
-	});
+	let formData = null;
+
+	if (form) {
+		formData = new FormData(form);
+	} else {
+		formData = JSON.stringify(data);
+	}
+
+	if (options.method.toUpperCase() != "GET") {
+		options.body = formData;
+	}
+
+	const res = await fetch(url, options);
+
+	if (!res.ok) {
+		console.warn(res);
+		let err = new Error("HTTP status code: " + res.status);
+		throw err;
+	}
+
+	return res;
 }
