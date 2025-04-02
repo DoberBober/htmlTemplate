@@ -1,6 +1,6 @@
 dev
 	- blocks
-		-- _mixins
+		-- _helpers
 	- fonts
 	- images
 		-- icons (SVG-icons for sprite)

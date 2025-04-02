@@ -1,6 +1,9 @@
 @import 'helpers/mixins'
 @import 'helpers/variables'
 
+:root
+	--white #ffffff
+
 html
 	height 100%
 	box-sizing border-box
@@ -10,6 +13,8 @@ body
 	min-height 100%
 	min-width 320px
 	margin 0
+	background white
+	font-family Arial, sans-serif
 
 *, *::before, *::after
 	box-sizing inherit
@@ -69,9 +74,9 @@ iframe
 		display none !important
 
 .container
-	max-width 1170px
+	max-width containerWidth
 	margin 0 auto
-	padding 0 15px
+	padding 0 containerPadding
 
 .loading, .loadingBlock
 	overflow hidden
@@ -102,5 +107,5 @@ iframe
 		height 100%
 		background-position center 150px
 
-// @import '../blocks/_mixins/**/*.styl'
+@import 'helpers/pages.styl'
 @import '../blocks/**/*.styl'
