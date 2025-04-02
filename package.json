@@ -1,11 +1,14 @@
 {
 	"name": "skeleton",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "gulp"
+		"start": "gulp",
+		"dev": "gulp",
+		"favicons": "gulp favicons",
+		"deploy": "gulp deploy"
 	},
 	"author": "",
 	"license": "ISC",
@@ -27,7 +30,6 @@
 		"gulp-svg-sprite": "^2.0.3",
 		"gulp-svgmin": "^4.1.0",
 		"gulp-terser": "^2.1.0",
-		"gulp-tinypng": "^1.0.2",
 		"pug": "^3.0.3",
 		"sass": "^1.86.1"
 	}
