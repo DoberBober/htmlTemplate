@@ -12,19 +12,16 @@ const pug = require("gulp-pug");
 const rename = require("gulp-rename");
 const replace = require("gulp-replace");
 const sourcemaps = require("gulp-sourcemaps");
-const stylus = require("gulp-stylus");
+const sass = require("gulp-sass")(require("sass"));
 const svgmin = require("gulp-svgmin");
 const svgSprite = require("gulp-svg-sprite");
 const terser = require("gulp-terser");
-const tinypng = require("gulp-tinypng");
 const realFavicon = require("gulp-real-favicon");
 const fs = require("fs");
 
 const FAVICON_DATA_FILE = "faviconData.json";
-
 const dev = "./dev/";
 const prod = "./public/";
-
 const MANIFEST_INFO = dev + "root/manifestInfo.json";
 
 /* Main tasks. */
@@ -92,10 +89,14 @@ exports.pages = pages;
 // Styles.
 const styles = () => {
 	return gulp
-		.src(dev + "styles/*.styl")
+		.src(dev + "styles/*.scss")
 		.pipe(errorNotifier())
 		.pipe(sourcemaps.init())
-		.pipe(stylus())
+		.pipe(
+			sass({
+				silenceDeprecations: ["import"],
+			}).on("error", sass.logError)
+		)
 		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(
@@ -237,43 +238,6 @@ const svgSpriteBuild = () => {
 exports.svgSpriteBuild = svgSpriteBuild;
 
 /* Deploy tasks. */
-// Images optimization.
-const imageOptimization = () => {
-	return gulp
-		.src(dev + "assets/*.{jpg, jpeg, png}")
-		.pipe(tinypng("KEY"))
-		.pipe(gulp.dest(prod + "assets"));
-};
-exports.imageOptimization = imageOptimization;
-
-// CSS minification.
-const cssMin = () => {
-	return gulp
-		.src([prod + "css/*.css"])
-		.pipe(csso())
-		.pipe(
-			rename({
-				suffix: ".min",
-			})
-		)
-		.pipe(gulp.dest(prod + "css"));
-};
-exports.cssMin = cssMin;
-
-// JS minification.
-const jsMin = () => {
-	return gulp
-		.src([prod + "js/*.js"])
-		.pipe(terser())
-		.pipe(
-			rename({
-				suffix: ".min",
-			})
-		)
-		.pipe(gulp.dest(prod + "js"));
-};
-exports.jsMin = jsMin;
-
 // Generate favicons.
 const generateFavicon = (done) => {
 	realFavicon.generateFavicon(
@@ -403,7 +367,7 @@ const watchFiles = () => {
 	);
 	// Styles and block styles.
 	gulp.watch(
-		[dev + "styles/*.styl", dev + "blocks/**/*.styl"],
+		[dev + "styles/*.scss", dev + "blocks/**/*.scss"],
 		gulp.series(styles)
 	);
 	// CSS.
@@ -446,5 +410,20 @@ const favicons = gulp.series(generateFavicon, injectFaviconMarkups);
 exports.favicons = favicons;
 
 // Deploy.
-const deploy = gulp.parallel(imageOptimization, cssMin, jsMin, favicons, root);
+const deploy = gulp.series(
+	images,
+	assets,
+	fonts,
+	pages,
+	css,
+	styles,
+	scripts,
+	pluginsCss,
+	pluginsJs,
+	moveCss,
+	moveJs,
+	svgSpriteBuild,
+	favicons,
+	root
+);
 exports.deploy = deploy;
