@@ -14,16 +14,16 @@ const BLOCKS_DIR = path.join(__dirname, "dev/blocks");
 const fileSources = {
 	pug: `mixin {blockName}(modificator, extraClasses)
 	- classList = '{blockName}'
-	
+
 	if modificator
 		each mod in modificator
 			- classList = classList + ' {blockName}--' + mod
-			
+
 	if extraClasses
 		- classList = classList + ' ' + extraClasses
-		
+
 	div(class=classList) blockName`,
-	styl: `.{blockName}\n\tdisplay block\n`,
+	scss: `.{blockName} \{\n\tdisplay: block;\n\}`,
 	js: `//.{blockName} scripts goes here\n`,
 };
 

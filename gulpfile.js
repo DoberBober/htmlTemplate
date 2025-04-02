@@ -12,7 +12,7 @@ const pug = require("gulp-pug");
 const rename = require("gulp-rename");
 const replace = require("gulp-replace");
 const sourcemaps = require("gulp-sourcemaps");
-const stylus = require("gulp-stylus");
+const sass = require("gulp-sass")(require("sass"));
 const svgmin = require("gulp-svgmin");
 const svgSprite = require("gulp-svg-sprite");
 const terser = require("gulp-terser");
@@ -92,10 +92,14 @@ exports.pages = pages;
 // Styles.
 const styles = () => {
 	return gulp
-		.src(dev + "styles/*.styl")
+		.src(dev + "styles/*.scss")
 		.pipe(errorNotifier())
 		.pipe(sourcemaps.init())
-		.pipe(stylus())
+		.pipe(
+			sass({
+				silenceDeprecations: ["import"],
+			}).on("error", sass.logError)
+		)
 		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(
@@ -403,7 +407,7 @@ const watchFiles = () => {
 	);
 	// Styles and block styles.
 	gulp.watch(
-		[dev + "styles/*.styl", dev + "blocks/**/*.styl"],
+		[dev + "styles/*.scss", dev + "blocks/**/*.scss"],
 		gulp.series(styles)
 	);
 	// CSS.

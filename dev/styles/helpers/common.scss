@@ -1,0 +1,43 @@
+html {
+	height: 100%;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+body {
+	min-height: 100%;
+	min-width: 320px;
+	margin: 0;
+	background: $white;
+	font-family: Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+button,
+input,
+textarea {
+	font-family: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+iframe {
+	max-width: 100%;
+}
+
+.sprite {
+	display: none;
+}
