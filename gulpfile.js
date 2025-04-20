@@ -367,7 +367,7 @@ const watchFiles = () => {
 	);
 	// Styles and block styles.
 	gulp.watch(
-		[dev + "styles/*.scss", dev + "blocks/**/*.scss"],
+		[dev + "styles/**/*.scss", dev + "blocks/**/*.scss"],
 		gulp.series(styles)
 	);
 	// CSS.
