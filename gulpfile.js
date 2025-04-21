@@ -41,12 +41,15 @@ exports.server = server;
 // Assets.
 const assets = () => {
 	return gulp
-		.src([
-			dev + "assets/*",
-			dev + "assets/**/*",
-			"!" + dev + "assets/icons",
-			"!" + dev + "assets/icons/*",
-		])
+		.src(
+			[
+				dev + "assets/*",
+				dev + "assets/**/*",
+				"!" + dev + "assets/icons",
+				"!" + dev + "assets/icons/*",
+			],
+			{ encoding: false }
+		)
 		.pipe(gulp.dest(prod + "assets"))
 		.pipe(browserSync.stream());
 };
