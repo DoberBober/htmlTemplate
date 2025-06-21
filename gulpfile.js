@@ -58,7 +58,7 @@ exports.assets = assets;
 // Images.
 const images = () => {
 	return gulp
-		.src([dev + "images/*", dev + "images/**/*"])
+		.src([dev + "images/*", dev + "images/**/*"], { encoding: false })
 		.pipe(gulp.dest(prod + "images"))
 		.pipe(browserSync.stream());
 };
@@ -67,7 +67,7 @@ exports.images = images;
 // Fonts.
 const fonts = () => {
 	return gulp
-		.src(dev + "fonts/*")
+		.src(dev + "fonts/*", { encoding: false })
 		.pipe(gulp.dest(prod + "fonts"))
 		.pipe(browserSync.stream());
 };
@@ -342,11 +342,14 @@ exports.injectFaviconMarkups = injectFaviconMarkups;
 // Move root-files.
 const root = () => {
 	return gulp
-		.src([
-			dev + "root/*",
-			"!" + dev + "root/favicon.png",
-			"!" + dev + "root/manifestInfo.json",
-		])
+		.src(
+			[
+				dev + "root/*",
+				"!" + dev + "root/favicon.png",
+				"!" + dev + "root/manifestInfo.json",
+			],
+			{ encoding: false }
+		)
 		.pipe(gulp.dest(prod))
 		.pipe(browserSync.stream());
 };
