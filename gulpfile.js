@@ -394,7 +394,7 @@ const watchFiles = () => {
 exports.watchFiles = watchFiles;
 
 // Default.
-exports.default = gulp.series(
+exports.default = gulp.parallel(
 	images,
 	assets,
 	fonts,
