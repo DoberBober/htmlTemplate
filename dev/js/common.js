@@ -15,10 +15,10 @@ async function sendData(form, action, data, method) {
 
 	let formData = null;
 
-	if (form) {
-		formData = new FormData(form);
-	} else {
+	if (date) {
 		formData = JSON.stringify(data);
+	} else {
+		formData = new FormData(form);
 	}
 
 	if (options.method.toUpperCase() != "GET") {
