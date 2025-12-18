@@ -7,7 +7,7 @@
  */
 
 async function sendData(form, action, data, method) {
-	let url = action ? action : form.action;
+	let url = action ? action : form.getAttribute('action');
 
 	let options = {
 		method: method ? method : "POST",
