@@ -15,7 +15,7 @@ async function sendData(form, action, data, method) {
 
 	let formData = null;
 
-	if (date) {
+	if (data) {
 		formData = JSON.stringify(data);
 	} else {
 		formData = new FormData(form);
