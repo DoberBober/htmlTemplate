@@ -73,7 +73,7 @@ exports.fonts = fonts;
 // Pages.
 const pages = () => {
 	return gulp
-		.src([dev + "layouts/*.pug", dev + "pages/*.pug"])
+		.src([dev + "pages/*.pug"])
 		.pipe(errorNotifier())
 		.pipe(
 			pug({
@@ -237,7 +237,6 @@ const svgSpriteBuild = () => {
 };
 exports.svgSpriteBuild = svgSpriteBuild;
 
-/* Deploy tasks. */
 // Move root-files.
 const root = () => {
 	return gulp
@@ -303,8 +302,8 @@ exports.default = gulp.parallel(
 	watchFiles
 );
 
-// Deploy.
-const deploy = gulp.series(
+// Build.
+const build = gulp.series(
 	images,
 	assets,
 	fonts,
@@ -319,4 +318,4 @@ const deploy = gulp.series(
 	svgSpriteBuild,
 	root
 );
-exports.deploy = deploy;
+exports.build = build;
