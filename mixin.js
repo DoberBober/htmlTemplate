@@ -23,8 +23,8 @@ const fileSources = {
 		- classList = classList + ' ' + extraClasses
 
 	div(class=classList) blockName`,
-	scss: `.{blockName} \{\n\tdisplay: block;\n\}`,
-	js: `//.{blockName} scripts goes here\n`,
+	scss: ``,
+	js: ``,
 };
 
 function validateBlockName(blockName) {
