@@ -16,13 +16,10 @@ const sass = require("gulp-sass")(require("sass"));
 const svgmin = require("gulp-svgmin");
 const svgSprite = require("gulp-svg-sprite");
 const terser = require("gulp-terser");
-const realFavicon = require("gulp-real-favicon");
 const fs = require("fs");
 
-const FAVICON_DATA_FILE = "faviconData.json";
 const dev = "./dev/";
 const prod = "./public/";
-const MANIFEST_INFO = dev + "root/manifestInfo.json";
 
 /* Main tasks. */
 // Server.
@@ -241,115 +238,10 @@ const svgSpriteBuild = () => {
 exports.svgSpriteBuild = svgSpriteBuild;
 
 /* Deploy tasks. */
-// Generate favicons.
-const generateFavicon = (done) => {
-	realFavicon.generateFavicon(
-		{
-			masterPicture: dev + "root/favicon.png",
-			dest: prod,
-			iconsPath: "/",
-			design: {
-				ios: {
-					pictureAspect: "backgroundAndMargin",
-					backgroundColor: "#000000",
-					margin: "28%",
-					assets: {
-						ios6AndPriorIcons: false,
-						ios7AndLaterIcons: false,
-						precomposedIcons: false,
-						declareOnlyDefaultIcon: true,
-					},
-				},
-				desktopBrowser: {
-					design: "raw",
-				},
-				windows: {
-					pictureAspect: "noChange",
-					backgroundColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
-						"windowsThemeColor"
-					],
-					onConflict: "override",
-					assets: {
-						windows80Ie10Tile: false,
-						windows10Ie11EdgeTiles: {
-							small: false,
-							medium: true,
-							big: false,
-							rectangle: false,
-						},
-					},
-				},
-				androidChrome: {
-					pictureAspect: "noChange",
-					themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
-						"androidThemeColor"
-					],
-					manifest: {
-						name: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
-							"appName"
-						],
-						startUrl: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
-							"startUrl"
-						],
-						display: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
-							"showingType"
-						],
-						orientation: "notSet",
-						onConflict: "override",
-						declared: true,
-					},
-					assets: {
-						legacyIcon: false,
-						lowResolutionIcons: false,
-					},
-				},
-				safariPinnedTab: {
-					pictureAspect: "silhouette",
-					themeColor: JSON.parse(fs.readFileSync(MANIFEST_INFO))[
-						"safariPinnedColor"
-					],
-				},
-			},
-			settings: {
-				scalingAlgorithm: "Mitchell",
-				errorOnImageTooSmall: false,
-				readmeFile: false,
-				htmlCodeFile: false,
-				usePathAsIs: false,
-			},
-			markupFile: FAVICON_DATA_FILE,
-		},
-		function () {
-			done();
-		}
-	);
-};
-exports.generateFavicon = generateFavicon;
-
-// Inject favicons.
-const injectFaviconMarkups = () => {
-	return gulp
-		.src([prod + "*.html"])
-		.pipe(
-			realFavicon.injectFaviconMarkups(
-				JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code
-			)
-		)
-		.pipe(gulp.dest(prod));
-};
-exports.injectFaviconMarkups = injectFaviconMarkups;
-
 // Move root-files.
 const root = () => {
 	return gulp
-		.src(
-			[
-				dev + "root/*",
-				"!" + dev + "root/favicon.png",
-				"!" + dev + "root/manifestInfo.json",
-			],
-			{ encoding: false }
-		)
+		.src([dev + "root/*"], { encoding: false })
 		.pipe(gulp.dest(prod))
 		.pipe(browserSync.stream());
 };
@@ -411,10 +303,6 @@ exports.default = gulp.parallel(
 	watchFiles
 );
 
-// Favicons.
-const favicons = gulp.series(generateFavicon, injectFaviconMarkups);
-exports.favicons = favicons;
-
 // Deploy.
 const deploy = gulp.series(
 	images,
@@ -429,7 +317,6 @@ const deploy = gulp.series(
 	moveCss,
 	moveJs,
 	svgSpriteBuild,
-	favicons,
 	root
 );
 exports.deploy = deploy;
