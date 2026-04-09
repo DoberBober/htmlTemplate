@@ -8,6 +8,8 @@ const concatJs = require("gulp-concat");
 const csso = require("gulp-csso");
 const errorNotifier = require("gulp-error-notifier");
 const gulp = require("gulp");
+const gulpif = require("gulp-if");
+const htmlmin = require("gulp-htmlmin");
 const pug = require("gulp-pug");
 const rename = require("gulp-rename");
 const replace = require("gulp-replace");
@@ -20,6 +22,8 @@ const fs = require("fs");
 
 const dev = "./dev/";
 const prod = "./public/";
+
+const isProd = process.argv.includes("--prod");
 
 /* Main tasks. */
 // Server.
@@ -77,10 +81,21 @@ const pages = () => {
 		.pipe(errorNotifier())
 		.pipe(
 			pug({
-				pretty: "	",
+				pretty: isProd ? false : "	",
 			})
 		)
 		.pipe(cached("pug"))
+		.pipe(
+			gulpif(
+				isProd,
+				htmlmin({
+					collapseWhitespace: true,
+					removeComments: true,
+					minifyCSS: true,
+					minifyJS: true,
+				})
+			)
+		)
 		.pipe(gulp.dest("./public"))
 		.pipe(browserSync.stream());
 };
@@ -91,13 +106,13 @@ const styles = () => {
 	return gulp
 		.src(dev + "styles/*.scss")
 		.pipe(errorNotifier())
-		.pipe(sourcemaps.init())
+		.pipe(gulpif(!isProd, sourcemaps.init()))
 		.pipe(
 			sass({
 				silenceDeprecations: ["import"],
 			}).on("error", sass.logError)
 		)
-		.pipe(sourcemaps.write("."))
+		.pipe(gulpif(!isProd, sourcemaps.write(".")))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(
 			csso({
@@ -109,7 +124,7 @@ const styles = () => {
 				suffix: ".min",
 			})
 		)
-		.pipe(sourcemaps.write("."))
+		.pipe(gulpif(!isProd, sourcemaps.write(".")))
 		.pipe(gulp.dest(prod + "css"))
 		.pipe(browserSync.stream());
 };
@@ -128,7 +143,7 @@ exports.css = css;
 const scripts = () => {
 	return gulp
 		.src([dev + "js/*.js", dev + "blocks/**/*.js"])
-		.pipe(sourcemaps.init())
+		.pipe(gulpif(!isProd, sourcemaps.init()))
 		.pipe(concatJs("main.js"))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(
@@ -137,7 +152,7 @@ const scripts = () => {
 			})
 		)
 		.pipe(terser())
-		.pipe(sourcemaps.write("."))
+		.pipe(gulpif(!isProd, sourcemaps.write(".")))
 		.pipe(gulp.dest(prod + "js"))
 		.pipe(browserSync.stream());
 };
