@@ -13,6 +13,8 @@ const htmlmin = require("gulp-htmlmin");
 const pug = require("gulp-pug");
 const rename = require("gulp-rename");
 const replace = require("gulp-replace");
+const rev = require("gulp-rev");
+const revCollector = require("gulp-rev-collector");
 const sourcemaps = require("gulp-sourcemaps");
 const sass = require("gulp-sass")(require("sass"));
 const svgmin = require("gulp-svgmin");
@@ -85,21 +87,35 @@ const pages = () => {
 			})
 		)
 		.pipe(cached("pug"))
-		.pipe(
-			gulpif(
-				isProd,
-				htmlmin({
-					collapseWhitespace: true,
-					removeComments: true,
-					minifyCSS: true,
-					minifyJS: true,
-				})
-			)
-		)
 		.pipe(gulp.dest("./public"))
 		.pipe(browserSync.stream());
 };
 exports.pages = pages;
+
+// Add assets hash.
+const revHTML = () => {
+	if (!isProd) {
+		return Promise.resolve();
+	}
+
+	return gulp
+		.src(["rev-manifest.json", "./public/**/*.html"])
+		.pipe(
+			revCollector({
+				replaceReved: true,
+			})
+		)
+		.pipe(
+			htmlmin({
+				collapseWhitespace: true,
+				removeComments: true,
+				minifyCSS: true,
+				minifyJS: true,
+			})
+		)
+		.pipe(gulp.dest("./public"));
+};
+exports.revHTML = revHTML;
 
 // Styles.
 const styles = () => {
@@ -125,7 +141,18 @@ const styles = () => {
 			})
 		)
 		.pipe(gulpif(!isProd, sourcemaps.write(".")))
+		.pipe(gulpif(isProd, rev()))
 		.pipe(gulp.dest(prod + "css"))
+		.pipe(
+			gulpif(
+				isProd,
+				rev.manifest({
+					path: "rev-manifest.json",
+					merge: true,
+				})
+			)
+		)
+		.pipe(gulpif(isProd, gulp.dest(".")))
 		.pipe(browserSync.stream());
 };
 exports.styles = styles;
@@ -153,7 +180,18 @@ const scripts = () => {
 		)
 		.pipe(terser())
 		.pipe(gulpif(!isProd, sourcemaps.write(".")))
+		.pipe(gulpif(isProd, rev()))
 		.pipe(gulp.dest(prod + "js"))
+		.pipe(
+			gulpif(
+				isProd,
+				rev.manifest({
+					path: "rev-manifest.json",
+					merge: true,
+				})
+			)
+		)
+		.pipe(gulpif(isProd, gulp.dest(".")))
 		.pipe(browserSync.stream());
 };
 exports.scripts = scripts;
@@ -304,12 +342,12 @@ exports.default = gulp.parallel(
 	images,
 	assets,
 	fonts,
-	pages,
 	css,
 	styles,
 	scripts,
 	pluginsCss,
 	pluginsJs,
+	pages,
 	moveCss,
 	moveJs,
 	svgSpriteBuild,
@@ -322,12 +360,13 @@ const build = gulp.series(
 	images,
 	assets,
 	fonts,
-	pages,
 	css,
 	styles,
 	scripts,
 	pluginsCss,
 	pluginsJs,
+	pages,
+	revHTML,
 	moveCss,
 	moveJs,
 	svgSpriteBuild,
