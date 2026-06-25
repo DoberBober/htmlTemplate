@@ -293,7 +293,7 @@ exports.svgSpriteBuild = svgSpriteBuild;
 // Move root-files.
 const root = () => {
 	return gulp
-		.src([dev + "root/*"], { encoding: false })
+		.src([dev + "root/*", dev + "root/.*"], { encoding: false })
 		.pipe(gulp.dest(prod))
 		.pipe(browserSync.stream());
 };
