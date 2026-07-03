@@ -20,12 +20,9 @@
 
 # Install:
 
+- Required Node.js: `>=20.10.0`.
 - For create block: `node block %blockname% `.
 - For create mixin: `node mixin %blockname% `.
-
-<!--  -->
-
-# Tasks:
-
-- `dev` (run server).
-- `build` (build project).
+- Dev server: `npm run dev`.
+- Production build: `npm run build`.
+- Preview production build: `npm run preview`.
