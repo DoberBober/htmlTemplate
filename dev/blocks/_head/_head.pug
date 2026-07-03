@@ -9,7 +9,8 @@ mixin head(title)
 		meta(name="viewport" content="width=device-width,initial-scale=1")
 		title !{default_title}
 		//-
-		link(href="css/styles.min.css" rel="stylesheet")
+		include ../_helpers/_styles.pug
+		+styles('plugins.min', 'styles.min')
 		// Search Engine
 		meta(name="description" content="_______________SiteDescription_______________")
 		meta(name="image" content="logo.svg")
