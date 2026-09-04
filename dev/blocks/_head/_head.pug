@@ -1,32 +1,33 @@
 mixin head(title)
-	- var default_title = 'title'
-	if title
-		- var default_title = title
-
 	head
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible" content="IE=Edge")
 		meta(name="viewport" content="width=device-width,initial-scale=1")
-		title !{default_title}
-		//-
+
 		include ../_helpers/_styles.pug
 		+styles('plugins.min', 'styles.min')
-		// Search Engine
+		// Search Engine.
+		title !{title || 'title'}
 		meta(name="description" content="_______________SiteDescription_______________")
-		meta(name="image" content="logo.svg")
-		meta(name="author" content="_______________authorName_______________")
-		// Twitter
-		meta(name="twitter:card" content="summary")
-		meta(name="twitter:title" content="_______________SiteName_______________")
-		meta(name="twitter:description" content="_______________SiteDescription_______________")
-		meta(name="twitter:image:src" content="logo.svg")
-		// Open Graph general (Facebook Pinterest & Google+)
-		meta(property="og:title" content="_______________SiteName_______________")
+		link(rel="canonical" href="_______________CanonicalUrl_______________")
+		// Open Graph.
+		meta(property="og:title" content=`${title || 'title'}`)
 		meta(property="og:description" content="_______________SiteDescription_______________")
-		meta(property="og:image" content="logo.svg")
-		meta(property="og:url" content="_______________example.ru_______________")
+		meta(property="og:url" content="_______________CanonicalUrl_______________")
 		meta(property="og:site_name" content="_______________SiteName_______________")
 		meta(property="og:locale" content="ru_RU")
 		meta(property="og:type" content="website")
+		meta(property="og:image" content="https://example.ru/og.png")
+		meta(property="og:image:width" content="1200")
+		meta(property="og:image:height" content="630")
+		meta(property="og:image:type" content="image/png")
+		meta(property="og:image:alt" content=`${title || 'title'}`)
 		// FAVICON FOR EVERYBODY, FREE, AND MAY NO ONE BE LEFT BEHIND!
+		link(rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96")
+		link(rel="icon" type="image/svg+xml" href="/favicon.svg")
+		link(rel="shortcut icon" href="/favicon.ico")
+		link(rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png")
+		link(rel="manifest" href="/site.webmanifest")
+		// A nation that does not honor its heroes will not long endure.
 		link(rel="author" href="/humans.txt")
+		meta(name="author" content="_______________authorName_______________")
